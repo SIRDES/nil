@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TechEdu Pro - Program Details</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#1152d4",
+                        "primary-dark": "#0d3ca0",
+                        "primary-light": "#eef4ff",
+                        "background-light": "#f8f9fc",
+                        "background-dark": "#101622",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#1a2333",
+                        "text-main": "#0d121b",
+                        "text-secondary": "#4c669a",
+                        "border-light": "#e7ebf3",
+                        "border-dark": "#2d3748",
+                    },
+                    fontFamily: {
+                        display: ["Lexend", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "1rem",
+                        lg: "2rem",
+                        xl: "3rem",
+                        full: "9999px",
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-text-main font-display antialiased min-h-screen flex flex-col">
+<!-- Navbar -->
+<header class="sticky top-0 z-50 w-full bg-surface-light/90 dark:bg-surface-dark/90 backdrop-blur-md border-b border-border-light dark:border-border-dark px-6 py-4">
+<div class="max-w-[1280px] mx-auto flex items-center justify-between">
+<div class="flex items-center gap-10">
+<a class="flex items-center gap-3 text-primary hover:opacity-80 transition-opacity" href="#">
+<div class="size-8 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-xl">school</span>
+</div>
+<h2 class="text-text-main dark:text-white text-xl font-bold tracking-tight">TechEdu Pro</h2>
+</a>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-text-main dark:text-gray-200 text-sm font-medium hover:text-primary transition-colors" href="#">Programs</a>
+<a class="text-text-main dark:text-gray-200 text-sm font-medium hover:text-primary transition-colors" href="#">Admissions</a>
+<a class="text-text-main dark:text-gray-200 text-sm font-medium hover:text-primary transition-colors" href="#">Student Stories</a>
+<a class="text-text-main dark:text-gray-200 text-sm font-medium hover:text-primary transition-colors" href="#">Contact</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden lg:flex items-center bg-background-light dark:bg-background-dark rounded-full px-4 py-2 border border-border-light dark:border-border-dark focus-within:ring-2 focus-within:ring-primary focus-within:border-primary transition-all">
+<span class="material-symbols-outlined text-text-secondary">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm text-text-main dark:text-white placeholder:text-text-secondary w-40" placeholder="Search courses..."/>
+</div>
+<button class="hidden sm:flex px-6 py-2.5 rounded-full bg-primary text-white text-sm font-bold hover:bg-primary-dark transition-colors shadow-lg shadow-primary/20">
+                    Log In
+                </button>
+<button class="md:hidden p-2 text-text-main dark:text-white">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</div>
+</header>
+<main class="flex-grow">
+<!-- Hero Section -->
+<section class="relative overflow-hidden bg-surface-light dark:bg-surface-dark border-b border-border-light dark:border-border-dark">
+<div class="absolute inset-0 bg-primary/5 dark:bg-primary/10 pointer-events-none"></div>
+<div class="absolute right-0 top-0 w-1/3 h-full bg-gradient-to-l from-primary/10 to-transparent dark:from-primary/20 pointer-events-none"></div>
+<div class="max-w-[1280px] mx-auto px-6 py-16 md:py-24 relative z-10">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
+<div class="flex flex-col gap-6 max-w-2xl">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-light dark:bg-primary/20 text-primary text-xs font-bold uppercase tracking-wider w-fit">
+<span class="size-2 rounded-full bg-green-500 animate-pulse"></span>
+                            Accepting Applications
+                        </div>
+<h1 class="text-4xl md:text-6xl font-black text-text-main dark:text-white leading-tight tracking-tight">
+                            Full Stack Web <br/><span class="text-primary">Development Bootcamp</span>
+</h1>
+<p class="text-lg md:text-xl text-text-secondary dark:text-gray-400 max-w-xl leading-relaxed">
+                            Master the MERN stack and launch your tech career. Build real-world projects and get hired by top tech companies.
+                        </p>
+<div class="flex flex-wrap items-center gap-4 mt-2">
+<div class="flex items-center gap-2 px-4 py-2 bg-background-light dark:bg-background-dark rounded-lg border border-border-light dark:border-border-dark">
+<span class="material-symbols-outlined text-primary">schedule</span>
+<span class="text-sm font-semibold text-text-main dark:text-white">3 Months Full-time</span>
+</div>
+<div class="flex items-center gap-2 px-4 py-2 bg-background-light dark:bg-background-dark rounded-lg border border-border-light dark:border-border-dark">
+<span class="material-symbols-outlined text-primary">group</span>
+<span class="text-sm font-semibold text-text-main dark:text-white">Cohort Based</span>
+</div>
+<div class="flex items-center gap-2 px-4 py-2 bg-background-light dark:bg-background-dark rounded-lg border border-border-light dark:border-border-dark">
+<span class="material-symbols-outlined text-primary">workspace_premium</span>
+<span class="text-sm font-semibold text-text-main dark:text-white">Certificate Included</span>
+</div>
+</div>
+</div>
+<div class="w-full md:w-auto flex flex-col gap-4">
+<div class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow-xl shadow-primary/5 border border-border-light dark:border-border-dark md:min-w-[320px]">
+<p class="text-sm text-text-secondary dark:text-gray-400 font-medium mb-1">Next Start Date</p>
+<p class="text-xl font-bold text-text-main dark:text-white mb-4">April 15, 2024</p>
+<button class="w-full py-3 px-6 rounded-lg bg-primary hover:bg-primary-dark text-white font-bold text-lg shadow-lg shadow-primary/30 transition-all transform active:scale-95 flex items-center justify-center gap-2">
+<span>Apply Now</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+<p class="text-xs text-center text-text-secondary dark:text-gray-500 mt-3">Limited seats available for this cohort.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Main Content Grid -->
+<div class="max-w-[1280px] mx-auto px-6 py-16 grid grid-cols-1 lg:grid-cols-12 gap-12">
+<!-- Left Column: Details -->
+<div class="lg:col-span-8 flex flex-col gap-16">
+<!-- Program Focus -->
+<section>
+<div class="flex items-center gap-3 mb-8">
+<div class="p-2 bg-primary/10 rounded-lg text-primary">
+<span class="material-symbols-outlined">target</span>
+</div>
+<h2 class="text-3xl font-bold text-text-main dark:text-white">Program Focus</h2>
+</div>
+<p class="text-text-secondary dark:text-gray-300 text-lg mb-8 leading-relaxed">
+                        Our intensive curriculum is designed to make you job-ready from day one, focusing on the technologies employers demand most. You won't just learn syntax; you'll learn how to think like a software engineer.
+                    </p>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Card 1 -->
+<div class="group flex flex-col gap-4 p-6 rounded-2xl bg-white dark:bg-gray-800 border border-border-light dark:border-border-dark hover:border-primary/50 hover:shadow-lg transition-all">
+<div class="size-12 rounded-xl bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl">code</span>
+</div>
+<div>
+<h3 class="text-lg font-bold text-text-main dark:text-white mb-2">Frontend Mastery</h3>
+<p class="text-sm text-text-secondary dark:text-gray-400 leading-relaxed">Deep dive into React, Redux, and modern CSS frameworks to build responsive, interactive UIs.</p>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="group flex flex-col gap-4 p-6 rounded-2xl bg-white dark:bg-gray-800 border border-border-light dark:border-border-dark hover:border-primary/50 hover:shadow-lg transition-all">
+<div class="size-12 rounded-xl bg-purple-50 dark:bg-purple-900/30 flex items-center justify-center text-purple-600 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl">database</span>
+</div>
+<div>
+<h3 class="text-lg font-bold text-text-main dark:text-white mb-2">Backend Logic</h3>
+<p class="text-sm text-text-secondary dark:text-gray-400 leading-relaxed">Build robust APIs with Node.js, Express, and MongoDB. Understand data structures and algorithms.</p>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="group flex flex-col gap-4 p-6 rounded-2xl bg-white dark:bg-gray-800 border border-border-light dark:border-border-dark hover:border-primary/50 hover:shadow-lg transition-all">
+<div class="size-12 rounded-xl bg-green-50 dark:bg-green-900/30 flex items-center justify-center text-green-600 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl">cloud_upload</span>
+</div>
+<div>
+<h3 class="text-lg font-bold text-text-main dark:text-white mb-2">DevOps Basics</h3>
+<p class="text-sm text-text-secondary dark:text-gray-400 leading-relaxed">Learn deployment, CI/CD pipelines, containerization with Docker, and cloud basics.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Curriculum Highlights -->
+<section>
+<div class="flex items-center gap-3 mb-8">
+<div class="p-2 bg-primary/10 rounded-lg text-primary">
+<span class="material-symbols-outlined">menu_book</span>
+</div>
+<h2 class="text-3xl font-bold text-text-main dark:text-white">Curriculum Highlights</h2>
+</div>
+<div class="bg-white dark:bg-gray-800 rounded-2xl border border-border-light dark:border-border-dark overflow-hidden">
+<div class="divide-y divide-border-light dark:divide-border-dark">
+<label class="flex items-start gap-4 p-5 hover:bg-background-light dark:hover:bg-gray-700/50 cursor-pointer transition-colors group">
+<div class="relative flex items-center">
+<input checked="" class="peer h-6 w-6 rounded border-gray-300 text-primary focus:ring-primary/20 dark:border-gray-600 dark:bg-gray-700 dark:checked:bg-primary" disabled="" type="checkbox"/>
+</div>
+<div>
+<p class="text-base font-semibold text-text-main dark:text-white group-hover:text-primary transition-colors">JavaScript Fundamentals &amp; ES6+</p>
+<p class="text-sm text-text-secondary dark:text-gray-400 mt-1">Variables, loops, functions, DOM manipulation, and modern syntax.</p>
+</div>
+</label>
+<label class="flex items-start gap-4 p-5 hover:bg-background-light dark:hover:bg-gray-700/50 cursor-pointer transition-colors group">
+<div class="relative flex items-center">
+<input checked="" class="peer h-6 w-6 rounded border-gray-300 text-primary focus:ring-primary/20 dark:border-gray-600 dark:bg-gray-700 dark:checked:bg-primary" disabled="" type="checkbox"/>
+</div>
+<div>
+<p class="text-base font-semibold text-text-main dark:text-white group-hover:text-primary transition-colors">React Component Lifecycle &amp; Hooks</p>
+<p class="text-sm text-text-secondary dark:text-gray-400 mt-1">State management, effect hooks, context API, and custom hooks.</p>
+</div>
+</label>
+<label class="flex items-start gap-4 p-5 hover:bg-background-light dark:hover:bg-gray-700/50 cursor-pointer transition-colors group">
+<div class="relative flex items-center">
+<input checked="" class="peer h-6 w-6 rounded border-gray-300 text-primary focus:ring-primary/20 dark:border-gray-600 dark:bg-gray-700 dark:checked:bg-primary" disabled="" type="checkbox"/>
+</div>
+<div>
+<p class="text-base font-semibold text-text-main dark:text-white group-hover:text-primary transition-colors">RESTful API Design &amp; Implementation</p>
+<p class="text-sm text-text-secondary dark:text-gray-400 mt-1">HTTP methods, status codes, middleware, and API security.</p>
+</div>
+</label>
+<label class="flex items-start gap-4 p-5 hover:bg-background-light dark:hover:bg-gray-700/50 cursor-pointer transition-colors group">
+<div class="relative flex items-center">
+<input checked="" class="peer h-6 w-6 rounded border-gray-300 text-primary focus:ring-primary/20 dark:border-gray-600 dark:bg-gray-700 dark:checked:bg-primary" disabled="" type="checkbox"/>
+</div>
+<div>
+<p class="text-base font-semibold text-text-main dark:text-white group-hover:text-primary transition-colors">Database Schema Design with MongoDB</p>
+<p class="text-sm text-text-secondary dark:text-gray-400 mt-1">Collections, documents, relationships, and aggregation pipelines.</p>
+</div>
+</label>
+<label class="flex items-start gap-4 p-5 hover:bg-background-light dark:hover:bg-gray-700/50 cursor-pointer transition-colors group">
+<div class="relative flex items-center">
+<input checked="" class="peer h-6 w-6 rounded border-gray-300 text-primary focus:ring-primary/20 dark:border-gray-600 dark:bg-gray-700 dark:checked:bg-primary" disabled="" type="checkbox"/>
+</div>
+<div>
+<p class="text-base font-semibold text-text-main dark:text-white group-hover:text-primary transition-colors">Authentication &amp; Security Best Practices</p>
+<p class="text-sm text-text-secondary dark:text-gray-400 mt-1">JWT, OAuth, hashing, salting, and protecting against common vulnerabilities.</p>
+</div>
+</label>
+</div>
+</div>
+</section>
+<!-- Instructors Section -->
+<section>
+<div class="flex items-center gap-3 mb-8">
+<div class="p-2 bg-primary/10 rounded-lg text-primary">
+<span class="material-symbols-outlined">cast_for_education</span>
+</div>
+<h2 class="text-3xl font-bold text-text-main dark:text-white">Lead Instructor</h2>
+</div>
+<div class="flex flex-col md:flex-row gap-6 p-6 bg-white dark:bg-gray-800 rounded-2xl border border-border-light dark:border-border-dark">
+<div class="w-24 h-24 md:w-32 md:h-32 shrink-0 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600 overflow-hidden" data-alt="Portrait of the lead instructor with a professional smile">
+<!-- Using a div with background image approach for avatar placeholder if no image provided, but user asked for data-alt on images -->
+<img alt="Sarah Jenkins" class="w-full h-full object-cover" data-alt="Professional headshot of Sarah Jenkins, Lead Instructor" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCDwtqfoBpxU5-vAGw2xluSZG8Dd2EbezDBt1NTzFHIeqgu46itIb2NZiK-7uA-PEA3w0V-A9XdxOhwYYFkAvt6Q-IypaJFzscqIIpUJd0kRILlawEGSb9JmN2aDITgHME0dMj-JzgzEIXNuNrQQsqcvSFCE_QRvPs5NA2YzQrjKvi7C32VpXc1ew0trxsV7H9VRM9dz7QG81pKeHWqMAUKdEXdRg_l9bjnpQJp2oQLxWr6IPpaM-i2_S7TLoT4lwQWJH2VPP6L0TM"/>
+</div>
+<div class="flex flex-col justify-center gap-2">
+<h3 class="text-xl font-bold text-text-main dark:text-white">Sarah Jenkins</h3>
+<p class="text-primary font-medium text-sm">Senior Full Stack Engineer @ TechCorp</p>
+<p class="text-text-secondary dark:text-gray-400 text-sm leading-relaxed mt-1">
+                                With over 10 years of industry experience, Sarah brings real-world insights into the classroom. She has architected scalable systems for Fortune 500 companies and loves mentoring aspiring developers.
+                            </p>
+<div class="flex gap-3 mt-2">
+<a class="text-text-secondary hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined text-lg">language</span></a>
+<a class="text-text-secondary hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined text-lg">mail</span></a>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column: Outcomes & Sticky CTA -->
+<div class="lg:col-span-4 flex flex-col gap-8">
+<!-- Career Outcomes Card -->
+<div class="bg-primary text-white rounded-2xl p-8 relative overflow-hidden">
+<div class="absolute top-0 right-0 -mt-4 -mr-4 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
+<div class="absolute bottom-0 left-0 -mb-4 -ml-4 w-24 h-24 bg-black/10 rounded-full blur-xl"></div>
+<h3 class="text-xl font-bold mb-6 relative z-10">Career Outcomes</h3>
+<div class="space-y-6 relative z-10">
+<div class="flex gap-4">
+<div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-white">trending_up</span>
+</div>
+<div>
+<p class="text-3xl font-black">$75k+</p>
+<p class="text-white/80 text-sm">Average Starting Salary</p>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-white">verified</span>
+</div>
+<div>
+<p class="text-3xl font-black">92%</p>
+<p class="text-white/80 text-sm">Hiring Rate within 6 Months</p>
+</div>
+</div>
+<div class="h-px bg-white/20 my-4"></div>
+<div>
+<p class="font-semibold mb-3">Our graduates work at:</p>
+<div class="flex flex-wrap gap-2">
+<span class="px-3 py-1 bg-white/10 rounded text-xs font-medium">Google</span>
+<span class="px-3 py-1 bg-white/10 rounded text-xs font-medium">Amazon</span>
+<span class="px-3 py-1 bg-white/10 rounded text-xs font-medium">Shopify</span>
+<span class="px-3 py-1 bg-white/10 rounded text-xs font-medium">Microsoft</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Testimonial -->
+<div class="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-border-light dark:border-border-dark">
+<div class="flex gap-1 text-yellow-400 mb-4">
+<span class="material-symbols-outlined text-lg fill-current">star</span>
+<span class="material-symbols-outlined text-lg fill-current">star</span>
+<span class="material-symbols-outlined text-lg fill-current">star</span>
+<span class="material-symbols-outlined text-lg fill-current">star</span>
+<span class="material-symbols-outlined text-lg fill-current">star</span>
+</div>
+<p class="text-text-main dark:text-gray-200 italic mb-6">"This bootcamp changed my life. The curriculum is tough but incredibly rewarding. I went from zero coding knowledge to a full-stack developer in 3 months."</p>
+<div class="flex items-center gap-3">
+<img alt="Michael T." class="w-10 h-10 rounded-full object-cover" data-alt="Headshot of Michael T., a happy graduate" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4KKoFyH3JIfEq_q__rpz_6CLS1-sL3sMpb4pKO0UXP8tTWjLnxZm7k0f5nr7tFnLMjzKPDcN0hkh4Dmyk6GGOVS9sc7IngpK9X6pTgVWm2c-YmDV03DsJmci7jYe32ts_Kk22OWI0c0aW8Sw7ZL4ERYHWxhEBUMXHfO2T7HuVSfaMlgakFqdDRipcf75Y9Iq6YiVy1gJ6RhoXKb-rMZP0jWq3M4G5tSeu6sAyJyIwRtTUWUYYFh9ZqL5G_aq1cttO_StfR2Vsxnk"/>
+<div>
+<p class="text-sm font-bold text-text-main dark:text-white">Michael T.</p>
+<p class="text-xs text-text-secondary dark:text-gray-400">Software Engineer @ Spotify</p>
+</div>
+</div>
+</div>
+<!-- Sticky CTA for Mobile/Desktop small -->
+<div class="sticky top-24 z-10 bg-surface-light dark:bg-surface-dark p-4 rounded-xl shadow-lg border border-primary/20">
+<div class="flex flex-col gap-3">
+<div class="flex justify-between items-center">
+<span class="text-sm font-medium text-text-secondary dark:text-gray-400">Tuition</span>
+<span class="text-xl font-bold text-text-main dark:text-white">$12,500</span>
+</div>
+<div class="h-px bg-border-light dark:border-border-dark"></div>
+<p class="text-xs text-text-secondary dark:text-gray-400 text-center">Flexible payment plans and scholarships available.</p>
+<button class="w-full py-3 px-6 rounded-lg bg-primary hover:bg-primary-dark text-white font-bold text-base shadow-lg shadow-primary/30 transition-all flex items-center justify-center gap-2">
+                            Register for April Cohort
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-white dark:bg-gray-900 border-t border-border-light dark:border-border-dark py-12 px-6 mt-12">
+<div class="max-w-[1280px] mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+<div class="flex items-center gap-3">
+<div class="size-6 bg-primary rounded flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-sm">school</span>
+</div>
+<span class="text-lg font-bold text-text-main dark:text-white">TechEdu Pro</span>
+</div>
+<p class="text-sm text-text-secondary dark:text-gray-500">© 2024 TechEdu Pro. All rights reserved.</p>
+<div class="flex gap-6">
+<a class="text-text-secondary hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="text-text-secondary hover:text-primary transition-colors" href="#">Terms of Service</a>
+</div>
+</div>
+</footer>
+</body></html>

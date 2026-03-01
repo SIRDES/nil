@@ -1,0 +1,409 @@
+"use client";
+
+import React, { useState } from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import { DayPicker } from 'react-day-picker';
+import { differenceInYears, format } from 'date-fns';
+import "react-day-picker/style.css";
+
+// 1. Define Zod schema
+const RegistrationSchema = z.object({
+  firstName: z.string().min(1, "First Name is required"),
+  lastName: z.string().min(1, "Last Name is required"),
+  email: z.string().email("Invalid email address"),
+  phone: z.string().min(7, "Phone number is required"),
+  city: z.string().min(2, "City is required"),
+  country: z.string().min(2, "Country is required"),
+  
+  program: z.string().min(1, "Please select a program"),
+  dateOfBirth: z.date().optional(),
+  
+  agreeTerms: z.boolean(),
+}).superRefine((data, ctx) => {
+  if (data.program === "Adult Education (Legon/UCC Mature Entrance)") {
+    if (!data.dateOfBirth) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Date of Birth is required to verify your age.",
+        path: ["dateOfBirth"],
+      });
+    } else {
+      const age = differenceInYears(new Date(), data.dateOfBirth);
+      if (age < 25) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "You must be at least 25 years old to enroll in the Mature Entrance program.",
+          path: ["dateOfBirth"],
+        });
+      }
+    }
+  }
+});
+
+type RegistrationFormData = z.infer<typeof RegistrationSchema>;
+
+const PROGRAM_OPTIONS = [
+  { id: "junior", title: "Junior Coders Program (Beginners)", duration: "3 months", tuition: "$2,500" },
+  { id: "accelerator", title: "Developer Accelerator Program (Intermediate)", duration: "4 months", tuition: "$5,000" },
+  { id: "ai", title: "AI & Emerging Technologies Program (Advanced)", duration: "6 months", tuition: "$8,500" },
+  { id: "mature", title: "Adult Education (Legon/UCC Mature Entrance)", duration: "3 months", tuition: "$1,800" },
+  { id: "jhs", title: "Adult Education (JHS pre-SHS)", duration: "Variable", tuition: "$1,200" },
+];
+
+export default function RegistrationWizard() {
+  const [step, setStep] = useState<number>(1);
+  const totalSteps = 3;
+
+  const {
+    register,
+    handleSubmit,
+    control,
+    trigger,
+    watch,
+    formState: { errors },
+  } = useForm<RegistrationFormData>({
+    resolver: zodResolver(RegistrationSchema),
+    mode: "onTouched",
+    defaultValues: {
+      program: "",
+      agreeTerms: false,
+    }
+  });
+
+  const selectedProgramValue = watch("program");
+  const selectedProgramDetails = PROGRAM_OPTIONS.find(p => p.title === selectedProgramValue);
+  const agreeTermsVal = watch("agreeTerms");
+
+  const nextStep = async () => {
+    let fieldsToValidate: (keyof RegistrationFormData)[] = [];
+    if (step === 1) {
+      fieldsToValidate = ['firstName', 'lastName', 'email', 'phone', 'city', 'country'];
+    } else if (step === 2) {
+      fieldsToValidate = ['program', 'dateOfBirth'];
+    }
+
+    const isValid = await trigger(fieldsToValidate);
+    if (isValid) {
+      setStep((prev) => Math.min(prev + 1, totalSteps));
+    }
+  };
+
+  const prevStep = () => {
+    setStep((prev) => Math.max(prev - 1, 1));
+  };
+
+  const onSubmit = (data: RegistrationFormData) => {
+    if (!data.agreeTerms) {
+      trigger('agreeTerms');
+      return;
+    }
+    console.log("Form Submitted:", data);
+    // Submit logic goes here...
+    alert("Registration Submitted Successfully!");
+  };
+
+  return (
+    <div className="w-full max-w-3xl mx-auto bg-white dark:bg-navy-card rounded-2xl shadow-xl border border-slate-100 dark:border-slate-800 overflow-hidden">
+      {/* Progress Bar Header */}
+      <div className="bg-slate-50 dark:bg-slate-800/50 p-6 border-b border-slate-100 dark:border-slate-800">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-bold text-slate-900 dark:text-white">Student Registration</h2>
+          <span className="text-sm font-medium text-slate-500 dark:text-slate-400">Step {step} of {totalSteps}</span>
+        </div>
+        <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2">
+          <div 
+            className="bg-primary h-2 rounded-full transition-all duration-300 ease-out"
+            style={{ width: `${(step / totalSteps) * 100}%` }}
+          />
+        </div>
+      </div>
+
+      <div className="p-6 md:p-8">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          
+          {/* STEP 1: Personal Information */}
+          <div className={`space-y-6 ${step === 1 ? 'block' : 'hidden'}`}>
+            <div className="flex items-center gap-3 border-b border-border-light dark:border-border-dark pb-4">
+              <span className="flex size-8 rounded-full items-center justify-center bg-primary/10 text-primary font-bold">1</span>
+              <h3 className="text-lg font-bold text-text-main dark:text-white">Personal Information</h3>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div className="flex flex-col gap-2">
+                <label className="text-sm font-bold text-slate-700 dark:text-slate-300">First Name</label>
+                <input 
+                  type="text" 
+                  {...register("firstName")}
+                  className={`border rounded-xl px-4 h-12 bg-transparent text-text-main dark:text-white focus:ring-2 focus:ring-primary ${errors.firstName ? 'border-red-500' : 'border-slate-200 dark:border-slate-700'}`}
+                  placeholder="John" 
+                />
+                {errors.firstName && <span className="text-xs text-red-500 font-medium">{errors.firstName.message}</span>}
+              </div>
+              <div className="flex flex-col gap-2">
+                <label className="text-sm font-bold text-slate-700 dark:text-slate-300">Last Name</label>
+                <input 
+                  type="text" 
+                  {...register("lastName")}
+                  className={`border rounded-xl px-4 h-12 bg-transparent text-text-main dark:text-white focus:ring-2 focus:ring-primary ${errors.lastName ? 'border-red-500' : 'border-slate-200 dark:border-slate-700'}`}
+                  placeholder="Doe" 
+                />
+                {errors.lastName && <span className="text-xs text-red-500 font-medium">{errors.lastName.message}</span>}
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div className="flex flex-col gap-2">
+                <label className="text-sm font-bold text-slate-700 dark:text-slate-300">Email Address</label>
+                <input 
+                  type="email" 
+                  {...register("email")}
+                  className={`border rounded-xl px-4 h-12 bg-transparent text-text-main dark:text-white focus:ring-2 focus:ring-primary ${errors.email ? 'border-red-500' : 'border-slate-200 dark:border-slate-700'}`}
+                  placeholder="you@example.com" 
+                />
+                {errors.email && <span className="text-xs text-red-500 font-medium">{errors.email.message}</span>}
+              </div>
+              <div className="flex flex-col gap-2">
+                <label className="text-sm font-bold text-slate-700 dark:text-slate-300">Phone Number</label>
+                <input 
+                  type="tel" 
+                  {...register("phone")}
+                  className={`border rounded-xl px-4 h-12 bg-transparent text-text-main dark:text-white focus:ring-2 focus:ring-primary ${errors.phone ? 'border-red-500' : 'border-slate-200 dark:border-slate-700'}`}
+                  placeholder="+233 55 000 0000" 
+                />
+                {errors.phone && <span className="text-xs text-red-500 font-medium">{errors.phone.message}</span>}
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div className="flex flex-col gap-2">
+                <label className="text-sm font-bold text-slate-700 dark:text-slate-300">City</label>
+                <input 
+                  type="text" 
+                  {...register("city")}
+                  className={`border rounded-xl px-4 h-12 bg-transparent text-text-main dark:text-white focus:ring-2 focus:ring-primary ${errors.city ? 'border-red-500' : 'border-slate-200 dark:border-slate-700'}`}
+                  placeholder="Accra" 
+                />
+                {errors.city && <span className="text-xs text-red-500 font-medium">{errors.city.message}</span>}
+              </div>
+              <div className="flex flex-col gap-2">
+                <label className="text-sm font-bold text-slate-700 dark:text-slate-300">Country</label>
+                <input 
+                  type="text" 
+                  {...register("country")}
+                  className={`border rounded-xl px-4 h-12 bg-transparent text-text-main dark:text-white focus:ring-2 focus:ring-primary ${errors.country ? 'border-red-500' : 'border-slate-200 dark:border-slate-700'}`}
+                  placeholder="Ghana" 
+                />
+                {errors.country && <span className="text-xs text-red-500 font-medium">{errors.country.message}</span>}
+              </div>
+            </div>
+          </div>
+
+          {/* STEP 2: Program Selection */}
+          <div className={`space-y-6 ${step === 2 ? 'block' : 'hidden'}`}>
+            <div className="flex items-center gap-3 border-b border-border-light dark:border-border-dark pb-4">
+              <span className="flex size-8 rounded-full items-center justify-center bg-primary/10 text-primary font-bold">2</span>
+              <h3 className="text-lg font-bold text-text-main dark:text-white">Program Selection</h3>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-bold text-slate-700 dark:text-slate-300">Select Enrolling Program</label>
+              <select 
+                {...register("program")}
+                className={`border rounded-xl px-4 h-12 bg-white dark:bg-slate-900 text-text-main dark:text-white focus:ring-2 focus:ring-primary ${errors.program ? 'border-red-500' : 'border-slate-200 dark:border-slate-700'}`}
+              >
+                <option value="">-- Select a program --</option>
+                {PROGRAM_OPTIONS.map((p) => (
+                  <option key={p.id} value={p.title}>{p.title}</option>
+                ))}
+              </select>
+              {errors.program && <span className="text-xs text-red-500 font-medium">{errors.program.message}</span>}
+            </div>
+
+            {selectedProgramValue === "Adult Education (Legon/UCC Mature Entrance)" && (
+              <div className="mt-6 p-6 rounded-xl border-2 border-primary/20 bg-primary/5 dark:bg-primary/10">
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="material-symbols-outlined text-primary text-2xl">verified_user</span>
+                  <h4 className="text-md font-bold text-text-main dark:text-white">Age Verification Required</h4>
+                </div>
+                <p className="text-sm text-text-secondary dark:text-gray-400 mb-6 leading-relaxed">
+                  As per regulations, students must be 25 years or older to enroll in the Mature Entrance program. Please accurately select your date of birth using the interactive picker below.
+                </p>
+                
+                <div className="flex flex-col gap-2 bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm inline-block">
+                  <Controller
+                    control={control}
+                    name="dateOfBirth"
+                    render={({ field }) => (
+                      <div className="flex flex-col">
+                        <DayPicker
+                          mode="single"
+                          selected={field.value}
+                          onSelect={field.onChange}
+                          defaultMonth={new Date(new Date().getFullYear() - 25, 0)}
+                          captionLayout="dropdown"
+                          startMonth={new Date(1950, 0)}
+                          endMonth={new Date()}
+                          className="dark:text-white p-0 m-0"
+                          classNames={{
+                            months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
+                            month: "space-y-4",
+                            caption: "flex justify-center pt-1 relative items-center",
+                            caption_label: "text-sm font-medium",
+                            nav: "space-x-1 flex items-center",
+                            nav_button: "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100",
+                            nav_button_previous: "absolute left-1",
+                            nav_button_next: "absolute right-1",
+                            table: "w-full border-collapse space-y-1",
+                            head_row: "flex",
+                            head_cell: "text-slate-500 rounded-md w-9 font-normal text-[0.8rem]",
+                            row: "flex w-full mt-2",
+                            cell: "text-center text-sm p-0 relative [&:has([aria-selected])]:bg-primary/10 first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
+                            day: "h-9 w-9 p-0 font-normal hover:bg-slate-100 dark:hover:bg-slate-700 rounded-md transition-colors",
+                            day_selected: "bg-primary text-white hover:bg-primary-dark hover:text-white focus:bg-primary focus:text-white",
+                            day_today: "font-bold text-primary",
+                            day_outside: "text-slate-400 opacity-50",
+                            day_disabled: "text-slate-400 opacity-50",
+                            day_hidden: "invisible",
+                          }}
+                        />
+                        {field.value && (
+                          <div className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-700 text-sm font-medium text-center text-primary">
+                            Selected: {format(field.value, 'PP')}
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  />
+                  {errors.dateOfBirth && <span className="text-xs text-red-500 font-bold mt-2 text-center">{errors.dateOfBirth.message}</span>}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* STEP 3: Review & Submit */}
+          <div className={`space-y-8 ${step === 3 ? 'block' : 'hidden'}`}>
+            <div className="flex items-center gap-3 border-b border-border-light dark:border-border-dark pb-4">
+              <span className="flex size-8 rounded-full items-center justify-center bg-primary/10 text-primary font-bold">3</span>
+              <h3 className="text-lg font-bold text-text-main dark:text-white">Review & Submit</h3>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-slate-50 dark:bg-slate-800/50 p-6 rounded-xl border border-slate-100 dark:border-slate-700">
+                <div className="flex justify-between items-center mb-4">
+                  <h4 className="font-bold text-slate-900 dark:text-white">Personal Details</h4>
+                  <button type="button" onClick={() => setStep(1)} className="text-primary text-sm font-medium hover:underline flex items-center">
+                    <span className="material-symbols-outlined text-sm mr-1">edit</span>Edit
+                  </button>
+                </div>
+                <dl className="space-y-3 text-sm">
+                  <div className="grid grid-cols-3">
+                    <dt className="text-slate-500 dark:text-slate-400">Name</dt>
+                    <dd className="col-span-2 font-medium text-slate-900 dark:text-white">{watch("firstName")} {watch("lastName")}</dd>
+                  </div>
+                  <div className="grid grid-cols-3">
+                    <dt className="text-slate-500 dark:text-slate-400">Email</dt>
+                    <dd className="col-span-2 font-medium text-slate-900 dark:text-white break-words">{watch("email")}</dd>
+                  </div>
+                  <div className="grid grid-cols-3">
+                    <dt className="text-slate-500 dark:text-slate-400">Phone</dt>
+                    <dd className="col-span-2 font-medium text-slate-900 dark:text-white">{watch("phone")}</dd>
+                  </div>
+                  <div className="grid grid-cols-3">
+                    <dt className="text-slate-500 dark:text-slate-400">Location</dt>
+                    <dd className="col-span-2 font-medium text-slate-900 dark:text-white">{watch("city")}, {watch("country")}</dd>
+                  </div>
+                  {watch("dateOfBirth") && watch("program") === "Adult Education (Legon/UCC Mature Entrance)" && (
+                    <div className="grid grid-cols-3">
+                      <dt className="text-slate-500 dark:text-slate-400">DOB</dt>
+                      <dd className="col-span-2 font-medium text-slate-900 dark:text-white">
+                        {format(watch("dateOfBirth") as Date, 'PP')}
+                      </dd>
+                    </div>
+                  )}
+                </dl>
+              </div>
+
+              <div className="bg-primary/5 border border-primary/20 p-6 rounded-xl flex flex-col justify-between">
+                <div>
+                  <div className="flex justify-between items-center mb-4">
+                    <h4 className="font-bold text-slate-900 dark:text-white">Selected Program</h4>
+                    <button type="button" onClick={() => setStep(2)} className="text-primary text-sm font-medium hover:underline flex items-center">
+                      <span className="material-symbols-outlined text-sm mr-1">edit</span>Edit
+                    </button>
+                  </div>
+                  <p className="font-bold text-primary mb-2 leading-tight pr-4">
+                    {selectedProgramDetails?.title || "None Selected"}
+                  </p>
+                  <div className="flex gap-4 mt-4">
+                    <div className="flex flex-col">
+                      <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Duration</span>
+                      <span className="text-sm font-bold text-slate-900 dark:text-white">{selectedProgramDetails?.duration || "--"}</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="mt-6 pt-4 border-t border-primary/10 flex justify-between items-end">
+                  <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Tuition Fee</span>
+                  <span className="text-2xl font-black text-slate-900 dark:text-white">{selectedProgramDetails?.tuition || "--"}</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-8 pt-6 border-t border-slate-100 dark:border-slate-800">
+              <label className="flex items-start gap-4 p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 rounded-lg cursor-pointer transition-colors border border-transparent hover:border-slate-200 dark:hover:border-slate-700">
+                <div className="relative flex items-center h-6 mt-0.5">
+                  <input 
+                    type="checkbox" 
+                    {...register("agreeTerms")}
+                    className="peer h-5 w-5 rounded border-slate-300 text-primary focus:ring-primary/20 dark:border-slate-600 dark:bg-slate-700 dark:checked:bg-primary cursor-pointer"
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-sm font-medium text-slate-900 dark:text-white leading-relaxed">
+                    I agree to the <a href="#" className="text-primary hover:underline">Terms & Conditions</a> and <a href="#" className="text-primary hover:underline">Privacy Policy</a>
+                  </span>
+                  {errors.agreeTerms && <span className="text-xs text-red-500 font-medium mt-1">{errors.agreeTerms.message}</span>}
+                </div>
+              </label>
+            </div>
+          </div>
+
+          {/* Form Actions */}
+          <div className="pt-6 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+            {step > 1 ? (
+              <button 
+                type="button" 
+                onClick={prevStep}
+                className="px-6 py-3 rounded-full text-slate-600 dark:text-slate-300 font-bold hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors flex items-center gap-2"
+              >
+                <span className="material-symbols-outlined text-sm">arrow_back</span>
+                Back
+              </button>
+            ) : <div></div>}
+            
+            {step < totalSteps ? (
+              <button 
+                type="button" 
+                onClick={nextStep}
+                className="px-8 py-3 rounded-full bg-primary text-white font-bold hover:bg-primary-dark hover:shadow-lg shadow-primary/30 transition-all flex items-center gap-2"
+              >
+                Continue
+                <span className="material-symbols-outlined text-sm">arrow_forward</span>
+              </button>
+            ) : (
+              <button 
+                type="submit" 
+                className={`px-8 py-3 rounded-full font-bold transition-all flex items-center gap-2 shadow-lg shadow-primary/30 ${agreeTermsVal ? 'bg-primary text-white hover:bg-primary-dark hover:shadow-xl hover:scale-105' : 'bg-slate-300 dark:bg-slate-700 text-slate-500 cursor-not-allowed opacity-50'}`}
+                disabled={!agreeTermsVal}
+              >
+                Submit Registration
+                <span className="material-symbols-outlined text-sm">check_circle</span>
+              </button>
+            )}
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
