@@ -13,6 +13,7 @@ const MANAGEMENT_ITEMS = [
   { label: "Registrations", icon: "assignment", href: "/admin/registrations" },
   { label: "Programs", icon: "local_library", href: "/admin/programs" },
   { label: "Instructors", icon: "people", href: "/admin/instructors" },
+  { label: "Admin Users", icon: "admin_panel_settings", href: "/admin/users" },
 ];
 
 const SUPPORT_ITEMS = [
