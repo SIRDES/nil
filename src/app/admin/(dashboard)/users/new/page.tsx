@@ -4,6 +4,7 @@ import { useForm, Controller } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import Link from "next/link";
+import toast from "react-hot-toast";
 
 /* ─── Types ───────────────────────────────────────────────────── */
 interface AddAdminForm {
@@ -12,7 +13,7 @@ interface AddAdminForm {
   email: string;
   phone: string;
   role: string;
-  temporaryPassword: string;
+  password: string;
   permissions: string[];
   sendInvite: boolean;
   enforce2FA: boolean;
@@ -93,7 +94,7 @@ export default function AddAdminPage() {
       email: "",
       phone: "",
       role: "",
-      temporaryPassword: "",
+      password: "",
       permissions: ["analytics", "registrations"],
       sendInvite: true,
       enforce2FA: false,
@@ -132,9 +133,41 @@ export default function AddAdminPage() {
   };
 
   /* Form submit */
-  const onSubmit = (data: AddAdminForm) => {
-    console.log("Create admin:", data);
-    router.push("/admin/users");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const onSubmit = async (data: AddAdminForm) => {
+    setIsSubmitting(true);
+    try {
+      const payload = {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        phone: data.phone || undefined,
+        role: data.role,
+        password: data.password,
+        permissions: data.permissions,
+        status: data.accountStatus === "Pending Activation" ? "Pending" : data.accountStatus,
+      };
+      const res = await fetch("/api/admins", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) {
+        
+        const err = await res.json().catch(() => null);
+        console.log("Error creating admin:", err);
+        if (res.status === 409) throw new Error("An admin with this email already exists.");
+        throw new Error(err?.error || `Failed to create account (${res.status})`);
+      }
+      toast.success("Admin account created successfully!");
+      router.push("/admin/users");
+    } catch (err) {
+      console.error("Error creating admin:", err);
+      toast.error(err instanceof Error ? err.message : "Failed to create account.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -173,12 +206,20 @@ export default function AddAdminPage() {
           <button
             id="create-account-btn"
             type="submit"
-            className="flex items-center gap-2 px-6 py-2.5 rounded-lg bg-primary hover:bg-primary-dark text-white text-sm font-bold shadow-lg shadow-primary/20 transition-all active:scale-[0.98]"
+            disabled={isSubmitting}
+            className="flex items-center gap-2 px-6 py-2.5 rounded-lg bg-primary hover:bg-primary-dark text-white text-sm font-bold shadow-lg shadow-primary/20 transition-all active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed"
           >
-            <span className="material-symbols-outlined text-lg">
-              person_add
-            </span>
-            Create Account
+            {isSubmitting ? (
+              <>
+                <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
+                Creating...
+              </>
+            ) : (
+              <>
+                <span className="material-symbols-outlined text-lg">person_add</span>
+                Create Account
+              </>
+            )}
           </button>
         </div>
       </div>
@@ -349,22 +390,22 @@ export default function AddAdminPage() {
             </div>
 
             <div className="flex flex-col gap-1.5">
-              <label htmlFor="temporaryPassword" className={labelClass}>
+              <label htmlFor="password" className={labelClass}>
                 Temporary Password <span className="text-red-500">*</span>
               </label>
               <input
-                id="temporaryPassword"
+                id="password"
                 type="password"
                 placeholder="Min. 8 characters"
-                className={`${inputClass} ${errors.temporaryPassword ? "ring-2 ring-red-500 border-red-500" : ""}`}
-                {...register("temporaryPassword", {
+                className={`${inputClass} ${errors.password ? "ring-2 ring-red-500 border-red-500" : ""}`}
+                {...register("password", {
                   required: "Password is required",
                   minLength: { value: 8, message: "Minimum 8 characters" },
                 })}
               />
-              {errors.temporaryPassword && (
+              {errors.password && (
                 <p className="text-xs text-red-500">
-                  {errors.temporaryPassword.message}
+                  {errors.password.message}
                 </p>
               )}
             </div>

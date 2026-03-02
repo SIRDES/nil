@@ -119,7 +119,7 @@ export default function AdminLogin() {
       </main>
 
       <footer className="border-t border-slate-800 py-4 text-center text-xs text-slate-500">
-        © 2024 TechSchool Education Systems. All rights reserved.
+        © {new Date().getFullYear()} TechSchool Education Systems. All rights reserved.
       </footer>
     </div>
   );

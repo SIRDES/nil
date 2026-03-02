@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import ProgramsGrid from '@/components/ProgramsGrid';
 
 export default function Home() {
   return (
@@ -64,7 +65,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Programs Section */}
+      {/* Programs Section — Now fetched from API */}
       <div id="programs" className="bg-background-light dark:bg-background-dark py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mb-12 text-center">
@@ -73,85 +74,7 @@ export default function Home() {
             <p className="mt-4 text-lg text-slate-600 dark:text-slate-400">Select the path that matches your career ambitions.</p>
           </div>
           
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-            
-            {/* Card 1 */}
-            <div className="group relative flex flex-col overflow-hidden rounded-2xl bg-white dark:bg-navy-card shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/10 border border-slate-100 dark:border-slate-800">
-              <div className="aspect-video w-full overflow-hidden bg-slate-200 dark:bg-slate-800">
-                <div className="h-full w-full bg-cover bg-center transition-transform duration-500 group-hover:scale-110" style={{ backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuBJWQauzqVJhpr_rSk8miePezjBqUhltcF5pKOSbCGBWqRdZrSq55WX_IstPKD18r1D8T77iVJ_j84tnVNrK7opsGmR9pHtIfp29V8jIyyG-QYn7Rpsr9sxrkxNCW8hCwvUvpXvJYO56Udiyy9M7NLomPUToX8lJTHtysf9OwflhLvZLFbDAHUOUTD8_cIQ-LMxPspoTW0pzC7Zyyc8Ouoe3ouoEVNuYhHapTTvijV2XucL3n9KLEQNgmveMgCdjOhf5hIqGy1F_I4")' }}></div>
-              </div>
-              <div className="flex flex-1 flex-col p-6">
-                <div className="mb-2 flex items-center gap-2">
-                  <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10 dark:bg-blue-400/10 dark:text-blue-400 dark:ring-blue-400/30">Ages 8-14</span>
-                </div>
-                <h4 className="text-xl font-bold text-slate-900 dark:text-white">Junior Coders</h4>
-                <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-600 dark:text-slate-400">Introduction to Python and Scratch. Building the foundation for future tech leaders.</p>
-                <div className="mt-6 pt-4 border-t border-slate-100 dark:border-slate-700">
-                  <Link href="/programs/junior-coders" className="flex items-center text-sm font-semibold text-primary hover:text-primary-dark transition-colors">
-                    Learn More <span className="material-symbols-outlined ml-1 text-sm">arrow_forward</span>
-                  </Link>
-                </div>
-              </div>
-            </div>
-
-            {/* Card 2 */}
-            <div className="group relative flex flex-col overflow-hidden rounded-2xl bg-white dark:bg-navy-card shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/10 border border-slate-100 dark:border-slate-800">
-              <div className="aspect-video w-full overflow-hidden bg-slate-200 dark:bg-slate-800">
-                <div className="h-full w-full bg-cover bg-center transition-transform duration-500 group-hover:scale-110" style={{ backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuBd_uyyzXRa-jH1Z4TWbM6HcXfD_BhWTuzNpFuYw3T3ueLcctwtzWVsZm52ZZT30j8w8_hRiAaThAZUI9Sp5pvvuLpRKgchBGUHwny2g-NeBP6zd6ghnrQWAC3lT_4pUbQIHCjDI_Dusa1wg3YnM43dYtmOtd-uh4xnoIaUKKAD9su4er2VrEwbg3NRqGGB_JoHH9UfIxjVgmeA7nma5wWgkP_sA8PWbVVwY73mQ60VAyzNLxvJXtfXeSJRjKntkAXlHk5jKffOINg")' }}></div>
-              </div>
-              <div className="flex flex-1 flex-col p-6">
-                <div className="mb-2 flex items-center gap-2">
-                  <span className="inline-flex items-center rounded-md bg-purple-50 px-2 py-1 text-xs font-medium text-purple-700 ring-1 ring-inset ring-purple-700/10 dark:bg-purple-400/10 dark:text-purple-400 dark:ring-purple-400/30">Bootcamp</span>
-                </div>
-                <h4 className="text-xl font-bold text-slate-900 dark:text-white">Developer Accelerator</h4>
-                <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-600 dark:text-slate-400">Full-stack web development bootcamp. From zero to hero in 12 intensive weeks.</p>
-                <div className="mt-6 pt-4 border-t border-slate-100 dark:border-slate-700">
-                  <Link href="/programs/developer-accelerator" className="flex items-center text-sm font-semibold text-primary hover:text-primary-dark transition-colors">
-                    Learn More <span className="material-symbols-outlined ml-1 text-sm">arrow_forward</span>
-                  </Link>
-                </div>
-              </div>
-            </div>
-
-            {/* Card 3 */}
-            <div className="group relative flex flex-col overflow-hidden rounded-2xl bg-white dark:bg-navy-card shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/10 border border-slate-100 dark:border-slate-800">
-              <div className="aspect-video w-full overflow-hidden bg-slate-200 dark:bg-slate-800">
-                <div className="h-full w-full bg-cover bg-center transition-transform duration-500 group-hover:scale-110" style={{ backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuBzGMSX_1P-yieuWFT0QNhIgy84Etxt65Et7fIs9xWdOBMw-FmtHX4lDheDi3rTrbxQEP1l75O8Al3bAZVOLW-66x2OV_LDfmSPZ7zMiWkvsTvnwDRXscybIdCE6dvuHI1vk-SLDIS-cNkUJSKQ4foIj0FhF27CATFKk7pqyEFFMi20PEbmF1SYSPGQgdl_JnGOT3DjQekA-krIX1EaSsK3KavpVIdZ0iCb5l6L7RItio2UTIfej6T8WmO6OsnvN7RRThQZIjIUyD0")' }}></div>
-              </div>
-              <div className="flex flex-1 flex-col p-6">
-                <div className="mb-2 flex items-center gap-2">
-                  <span className="inline-flex items-center rounded-md bg-indigo-50 px-2 py-1 text-xs font-medium text-indigo-700 ring-1 ring-inset ring-indigo-700/10 dark:bg-indigo-400/10 dark:text-indigo-400 dark:ring-indigo-400/30">Advanced</span>
-                </div>
-                <h4 className="text-xl font-bold text-slate-900 dark:text-white">AI & Emerging Tech</h4>
-                <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-600 dark:text-slate-400">Master Machine Learning and Data Science. Prepare for the future of tech.</p>
-                <div className="mt-6 pt-4 border-t border-slate-100 dark:border-slate-700">
-                  <Link href="/programs/ai-emerging-tech" className="flex items-center text-sm font-semibold text-primary hover:text-primary-dark transition-colors">
-                    Learn More <span className="material-symbols-outlined ml-1 text-sm">arrow_forward</span>
-                  </Link>
-                </div>
-              </div>
-            </div>
-
-            {/* Card 4 */}
-            <div className="group relative flex flex-col overflow-hidden rounded-2xl bg-white dark:bg-navy-card shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/10 border border-slate-100 dark:border-slate-800">
-              <div className="aspect-video w-full overflow-hidden bg-slate-200 dark:bg-slate-800">
-                <div className="h-full w-full bg-cover bg-center transition-transform duration-500 group-hover:scale-110" style={{ backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuDqMC04Z_2Oas2kWXXJ2v80vbM9Ni6TVSztvbT8idNtXW3hwaHJobQlqSM1UH1lrNwKGuFKuvp9--dx8XZBF7OUcg7zrbnGXBcCsoxsggDXVie6Zax4bXJYZ2_o6updwJ6P-x5YIc_QmMJYQ8Ug1LDmTLr_W_anPOWwcqbdrTGFhjn5JOBVHoFQ2co-ZOnG-Y_GXAv6zMOgqMIpaldqftCyKuOYJdV1idTKkBmmYHisq61XzFQg9pG61hinZz1DLQl6SPxwuJNRwwQ")' }}></div>
-              </div>
-              <div className="flex flex-1 flex-col p-6">
-                <div className="mb-2 flex items-center gap-2">
-                  <span className="inline-flex items-center rounded-md bg-emerald-50 px-2 py-1 text-xs font-medium text-emerald-700 ring-1 ring-inset ring-emerald-700/10 dark:bg-emerald-400/10 dark:text-emerald-400 dark:ring-emerald-400/30">Professional</span>
-                </div>
-                <h4 className="text-xl font-bold text-slate-900 dark:text-white">Adult Education</h4>
-                <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-600 dark:text-slate-400">Upskilling for professionals. Flexible evening and weekend classes available.</p>
-                <div className="mt-6 pt-4 border-t border-slate-100 dark:border-slate-700">
-                  <Link href="/programs/adult-education" className="flex items-center text-sm font-semibold text-primary hover:text-primary-dark transition-colors">
-                    Learn More <span className="material-symbols-outlined ml-1 text-sm">arrow_forward</span>
-                  </Link>
-                </div>
-              </div>
-            </div>
-
-          </div>
+          <ProgramsGrid />
         </div>
       </div>
 

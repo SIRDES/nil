@@ -54,6 +54,9 @@ const PROGRAM_OPTIONS = [
 
 export default function RegistrationWizard() {
   const [step, setStep] = useState<number>(1);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [apiError, setApiError] = useState<string | null>(null);
   const totalSteps = 3;
 
   const {
@@ -62,6 +65,8 @@ export default function RegistrationWizard() {
     control,
     trigger,
     watch,
+    reset,
+    setError,
     formState: { errors },
   } = useForm<RegistrationFormData>({
     resolver: zodResolver(RegistrationSchema),
@@ -94,15 +99,91 @@ export default function RegistrationWizard() {
     setStep((prev) => Math.max(prev - 1, 1));
   };
 
-  const onSubmit = (data: RegistrationFormData) => {
+  const onSubmit = async (data: RegistrationFormData) => {
     if (!data.agreeTerms) {
       trigger('agreeTerms');
       return;
     }
-    console.log("Form Submitted:", data);
-    // Submit logic goes here...
-    alert("Registration Submitted Successfully!");
+
+    setIsSubmitting(true);
+    setApiError(null);
+
+    try {
+      const payload = {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        phone: data.phone,
+        location: `${data.city}, ${data.country}`,
+        programId: data.program, // will need to map to an ObjectId in production
+        dateOfBirth: data.dateOfBirth?.toISOString() || undefined,
+      };
+
+      const res = await fetch("/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const result = await res.json();
+
+      if (!res.ok) {
+        // Handle specific Mature Entrance age error
+        if (result.error === "Age requirement not met" || result.error === "Date of birth is required") {
+          setError("dateOfBirth", {
+            type: "server",
+            message: result.details || result.error,
+          });
+          // Jump back to step 2 to show the error
+          setStep(2);
+        } else {
+          setApiError(result.details || result.error || "Something went wrong. Please try again.");
+        }
+        return;
+      }
+
+      // Success!
+      setSubmitSuccess(true);
+      reset();
+    } catch {
+      setApiError("Network error. Please check your connection and try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
+
+  // ── Success Confirmation UI ──
+  if (submitSuccess) {
+    return (
+      <div className="w-full max-w-3xl mx-auto bg-white dark:bg-navy-card rounded-2xl shadow-xl border border-slate-100 dark:border-slate-800 overflow-hidden">
+        <div className="flex flex-col items-center justify-center text-center py-16 px-8">
+          <div className="w-20 h-20 rounded-full bg-emerald-100 dark:bg-emerald-500/20 flex items-center justify-center mb-6 animate-bounce">
+            <span className="material-symbols-outlined text-4xl text-emerald-600 dark:text-emerald-400">
+              check_circle
+            </span>
+          </div>
+          <h2 className="text-3xl font-black text-slate-900 dark:text-white mb-3">
+            Registration Submitted!
+          </h2>
+          <p className="text-slate-500 dark:text-slate-400 text-lg max-w-md leading-relaxed mb-2">
+            Thank you for applying. Our admissions team will review your application and contact you within 2-3 business days.
+          </p>
+          <p className="text-sm text-slate-400 dark:text-slate-500 mb-8">
+            A confirmation email has been sent to your inbox.
+          </p>
+          <button
+            onClick={() => {
+              setSubmitSuccess(false);
+              setStep(1);
+            }}
+            className="px-8 py-3 rounded-full bg-primary text-white font-bold hover:bg-primary-dark transition-all"
+          >
+            Submit Another Registration
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full max-w-3xl mx-auto bg-white dark:bg-navy-card rounded-2xl shadow-xl border border-slate-100 dark:border-slate-800 overflow-hidden">
@@ -122,6 +203,20 @@ export default function RegistrationWizard() {
 
       <div className="p-6 md:p-8">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+
+          {/* API Error Banner */}
+          {apiError && (
+            <div className="flex items-start gap-3 p-4 rounded-xl bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30">
+              <span className="material-symbols-outlined text-red-500 mt-0.5">error</span>
+              <div>
+                <p className="text-sm font-bold text-red-700 dark:text-red-400">Submission Failed</p>
+                <p className="text-sm text-red-600 dark:text-red-300 mt-0.5">{apiError}</p>
+              </div>
+              <button type="button" onClick={() => setApiError(null)} className="ml-auto text-red-400 hover:text-red-600">
+                <span className="material-symbols-outlined text-lg">close</span>
+              </button>
+            </div>
+          )}
           
           {/* STEP 1: Personal Information */}
           <div className={`space-y-6 ${step === 1 ? 'block' : 'hidden'}`}>
@@ -276,7 +371,12 @@ export default function RegistrationWizard() {
                       </div>
                     )}
                   />
-                  {errors.dateOfBirth && <span className="text-xs text-red-500 font-bold mt-2 text-center">{errors.dateOfBirth.message}</span>}
+                  {errors.dateOfBirth && (
+                    <div className="flex items-center gap-2 mt-2 p-2 bg-red-50 dark:bg-red-500/10 rounded-lg">
+                      <span className="material-symbols-outlined text-red-500 text-base">warning</span>
+                      <span className="text-xs text-red-600 dark:text-red-400 font-bold">{errors.dateOfBirth.message}</span>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
@@ -375,7 +475,8 @@ export default function RegistrationWizard() {
               <button 
                 type="button" 
                 onClick={prevStep}
-                className="px-6 py-3 rounded-full text-slate-600 dark:text-slate-300 font-bold hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors flex items-center gap-2"
+                disabled={isSubmitting}
+                className="px-6 py-3 rounded-full text-slate-600 dark:text-slate-300 font-bold hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors flex items-center gap-2 disabled:opacity-50"
               >
                 <span className="material-symbols-outlined text-sm">arrow_back</span>
                 Back
@@ -394,11 +495,27 @@ export default function RegistrationWizard() {
             ) : (
               <button 
                 type="submit" 
-                className={`px-8 py-3 rounded-full font-bold transition-all flex items-center gap-2 shadow-lg shadow-primary/30 ${agreeTermsVal ? 'bg-primary text-white hover:bg-primary-dark hover:shadow-xl hover:scale-105' : 'bg-slate-300 dark:bg-slate-700 text-slate-500 cursor-not-allowed opacity-50'}`}
-                disabled={!agreeTermsVal}
+                className={`px-8 py-3 rounded-full font-bold transition-all flex items-center gap-2 shadow-lg shadow-primary/30 ${
+                  agreeTermsVal && !isSubmitting
+                    ? 'bg-primary text-white hover:bg-primary-dark hover:shadow-xl hover:scale-105' 
+                    : 'bg-slate-300 dark:bg-slate-700 text-slate-500 cursor-not-allowed opacity-50'
+                }`}
+                disabled={!agreeTermsVal || isSubmitting}
               >
-                Submit Registration
-                <span className="material-symbols-outlined text-sm">check_circle</span>
+                {isSubmitting ? (
+                  <>
+                    <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Submitting...
+                  </>
+                ) : (
+                  <>
+                    Submit Registration
+                    <span className="material-symbols-outlined text-sm">check_circle</span>
+                  </>
+                )}
               </button>
             )}
           </div>
@@ -407,3 +524,4 @@ export default function RegistrationWizard() {
     </div>
   );
 }
+

@@ -1,4 +1,89 @@
+"use client";
+
+import { useState, FormEvent } from "react";
+
 export default function Contact() {
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    subject: "General Inquiry",
+    message: "",
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [toast, setToast] = useState<{ type: "success" | "error"; message: string } | null>(null);
+
+  const update = (field: string, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+
+    // Basic client-side validation
+    if (!formData.firstName || !formData.email || !formData.subject || !formData.message) {
+      setToast({ type: "error", message: "Please fill in all required fields." });
+      return;
+    }
+
+    setIsSubmitting(true);
+    setToast(null);
+
+    try {
+      const payload = {
+        name: `${formData.firstName} ${formData.lastName}`.trim(),
+        email: formData.email,
+        phone: formData.phone || undefined,
+        subject: formData.subject,
+        messageBody: formData.message,
+        source: "Contact Form",
+      };
+
+      const res = await fetch("/api/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const result = await res.json();
+
+      if (!res.ok) {
+        setToast({
+          type: "error",
+          message: result.details || result.error || "Something went wrong. Please try again.",
+        });
+        return;
+      }
+
+      // Success
+      setToast({
+        type: "success",
+        message: "Your message has been sent! Our team will get back to you within 24 hours.",
+      });
+
+      // Reset form
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        subject: "General Inquiry",
+        message: "",
+      });
+    } catch {
+      setToast({
+        type: "error",
+        message: "Network error. Please check your connection and try again.",
+      });
+    } finally {
+      setIsSubmitting(false);
+
+      // Auto-dismiss toast after 6 seconds
+      setTimeout(() => setToast(null), 6000);
+    }
+  };
+
   return (
     <div className="flex-grow flex flex-col items-center w-full px-4 py-8 md:py-12 bg-background-light dark:bg-background-dark">
       <div className="w-full max-w-7xl flex flex-col gap-10">
@@ -10,6 +95,51 @@ export default function Contact() {
             Whether you have questions about our curriculum, admissions process, or career support, we&apos;re here to help you start your journey in tech.
           </p>
         </div>
+
+        {/* Toast Notification */}
+        {toast && (
+          <div
+            className={`fixed top-6 right-6 z-50 max-w-md flex items-start gap-3 p-4 rounded-xl shadow-2xl border animate-in slide-in-from-right transition-all ${
+              toast.type === "success"
+                ? "bg-emerald-50 dark:bg-emerald-500/10 border-emerald-200 dark:border-emerald-500/30"
+                : "bg-red-50 dark:bg-red-500/10 border-red-200 dark:border-red-500/30"
+            }`}
+          >
+            <span
+              className={`material-symbols-outlined mt-0.5 ${
+                toast.type === "success" ? "text-emerald-600 dark:text-emerald-400" : "text-red-500"
+              }`}
+            >
+              {toast.type === "success" ? "check_circle" : "error"}
+            </span>
+            <div className="flex-1">
+              <p
+                className={`text-sm font-bold ${
+                  toast.type === "success"
+                    ? "text-emerald-700 dark:text-emerald-400"
+                    : "text-red-700 dark:text-red-400"
+                }`}
+              >
+                {toast.type === "success" ? "Message Sent!" : "Error"}
+              </p>
+              <p
+                className={`text-sm mt-0.5 ${
+                  toast.type === "success"
+                    ? "text-emerald-600 dark:text-emerald-300"
+                    : "text-red-600 dark:text-red-300"
+                }`}
+              >
+                {toast.message}
+              </p>
+            </div>
+            <button
+              onClick={() => setToast(null)}
+              className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
+            >
+              <span className="material-symbols-outlined text-lg">close</span>
+            </button>
+          </div>
+        )}
         
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           
@@ -20,30 +150,69 @@ export default function Contact() {
               <p className="text-slate-500 dark:text-slate-400">Fill out the form below and our admissions team will get back to you within 24 hours.</p>
             </div>
             
-            <form className="flex flex-col gap-5">
+            <form onSubmit={handleSubmit} className="flex flex-col gap-5">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <label className="flex flex-col gap-2">
-                  <span className="text-slate-900 dark:text-slate-200 text-sm font-bold">First Name</span>
-                  <input type="text" placeholder="Jane" className="form-input w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:border-primary focus:ring-primary h-12 px-4 placeholder:text-slate-400" />
+                  <span className="text-slate-900 dark:text-slate-200 text-sm font-bold">
+                    First Name <span className="text-red-500">*</span>
+                  </span>
+                  <input
+                    type="text"
+                    placeholder="Jane"
+                    value={formData.firstName}
+                    onChange={(e) => update("firstName", e.target.value)}
+                    disabled={isSubmitting}
+                    className="form-input w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:border-primary focus:ring-primary h-12 px-4 placeholder:text-slate-400 disabled:opacity-50"
+                  />
                 </label>
                 <label className="flex flex-col gap-2">
                   <span className="text-slate-900 dark:text-slate-200 text-sm font-bold">Last Name</span>
-                  <input type="text" placeholder="Doe" className="form-input w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:border-primary focus:ring-primary h-12 px-4 placeholder:text-slate-400" />
+                  <input
+                    type="text"
+                    placeholder="Doe"
+                    value={formData.lastName}
+                    onChange={(e) => update("lastName", e.target.value)}
+                    disabled={isSubmitting}
+                    className="form-input w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:border-primary focus:ring-primary h-12 px-4 placeholder:text-slate-400 disabled:opacity-50"
+                  />
                 </label>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <label className="flex flex-col gap-2">
-                  <span className="text-slate-900 dark:text-slate-200 text-sm font-bold">Email Address</span>
-                  <input type="email" placeholder="jane.doe@example.com" className="form-input w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:border-primary focus:ring-primary h-12 px-4 placeholder:text-slate-400" />
+                  <span className="text-slate-900 dark:text-slate-200 text-sm font-bold">
+                    Email Address <span className="text-red-500">*</span>
+                  </span>
+                  <input
+                    type="email"
+                    placeholder="jane.doe@example.com"
+                    value={formData.email}
+                    onChange={(e) => update("email", e.target.value)}
+                    disabled={isSubmitting}
+                    className="form-input w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:border-primary focus:ring-primary h-12 px-4 placeholder:text-slate-400 disabled:opacity-50"
+                  />
                 </label>
                 <label className="flex flex-col gap-2">
                   <span className="text-slate-900 dark:text-slate-200 text-sm font-bold">Phone Number</span>
-                  <input type="tel" placeholder="+1 (555) 000-0000" className="form-input w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:border-primary focus:ring-primary h-12 px-4 placeholder:text-slate-400" />
+                  <input
+                    type="tel"
+                    placeholder="+1 (555) 000-0000"
+                    value={formData.phone}
+                    onChange={(e) => update("phone", e.target.value)}
+                    disabled={isSubmitting}
+                    className="form-input w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:border-primary focus:ring-primary h-12 px-4 placeholder:text-slate-400 disabled:opacity-50"
+                  />
                 </label>
               </div>
               <label className="flex flex-col gap-2">
-                <span className="text-slate-900 dark:text-slate-200 text-sm font-bold">Subject</span>
-                <select className="form-select w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:border-primary focus:ring-primary h-12 px-4">
+                <span className="text-slate-900 dark:text-slate-200 text-sm font-bold">
+                  Subject <span className="text-red-500">*</span>
+                </span>
+                <select
+                  value={formData.subject}
+                  onChange={(e) => update("subject", e.target.value)}
+                  disabled={isSubmitting}
+                  className="form-select w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:border-primary focus:ring-primary h-12 px-4 disabled:opacity-50"
+                >
                   <option>General Inquiry</option>
                   <option>Course Details</option>
                   <option>Tuition & Financing</option>
@@ -51,11 +220,33 @@ export default function Contact() {
                 </select>
               </label>
               <label className="flex flex-col gap-2">
-                <span className="text-slate-900 dark:text-slate-200 text-sm font-bold">Message</span>
-                <textarea placeholder="How can we help you achieve your career goals?" className="form-textarea w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:border-primary focus:ring-primary min-h-[8rem] p-4 placeholder:text-slate-400 resize-none"></textarea>
+                <span className="text-slate-900 dark:text-slate-200 text-sm font-bold">
+                  Message <span className="text-red-500">*</span>
+                </span>
+                <textarea
+                  placeholder="How can we help you achieve your career goals?"
+                  value={formData.message}
+                  onChange={(e) => update("message", e.target.value)}
+                  disabled={isSubmitting}
+                  className="form-textarea w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:border-primary focus:ring-primary min-h-[8rem] p-4 placeholder:text-slate-400 resize-none disabled:opacity-50"
+                ></textarea>
               </label>
-              <button type="button" className="mt-2 flex w-full md:w-auto cursor-pointer items-center justify-center rounded-full h-12 px-8 bg-primary hover:bg-primary-dark transition-all text-white text-base font-bold shadow-lg shadow-primary/25">
-                Send Message
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="mt-2 flex w-full md:w-auto cursor-pointer items-center justify-center rounded-full h-12 px-8 bg-primary hover:bg-primary-dark transition-all text-white text-base font-bold shadow-lg shadow-primary/25 disabled:opacity-60 disabled:cursor-not-allowed gap-2"
+              >
+                {isSubmitting ? (
+                  <>
+                    <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Sending...
+                  </>
+                ) : (
+                  "Send Message"
+                )}
               </button>
             </form>
           </div>

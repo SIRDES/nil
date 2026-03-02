@@ -1,18 +1,14 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
-const AVAILABLE_PROGRAMS = [
-  { id: "fullstack", name: "Full Stack Development" },
-  { id: "ai", name: "AI & Emerging Technologies" },
-  { id: "cybersecurity", name: "Cybersecurity Analyst" },
-  { id: "uiux", name: "UI/UX Design Master" },
-  { id: "cloud", name: "Cloud Computing" },
-  { id: "data", name: "Data Science Bootcamp" },
-  { id: "mobile", name: "Mobile App Development" },
-  { id: "devops", name: "DevOps Engineering" },
-];
+interface AvailableProgram {
+  _id: string;
+  name: string;
+}
 
 interface InstructorForm {
   firstName: string;
@@ -32,7 +28,18 @@ interface InstructorForm {
 }
 
 export default function AddInstructorPage() {
+  const router = useRouter();
   const avatarRef = useRef<HTMLInputElement>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [availablePrograms, setAvailablePrograms] = useState<AvailableProgram[]>([]);
+
+  // Fetch programs from API for the assignment checkboxes
+  useEffect(() => {
+    fetch("/api/programs")
+      .then((res) => res.json())
+      .then((data) => setAvailablePrograms(Array.isArray(data) ? data : []))
+      .catch(() => {});
+  }, []);
 
   const [form, setForm] = useState<InstructorForm>({
     firstName: "",
@@ -73,10 +80,42 @@ export default function AddInstructorPage() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Instructor Data (ready for MongoDB):", form);
-    alert("Instructor profile created!");
+    if (!form.firstName || !form.lastName || !form.title || !form.email) {
+      toast.error("Please fill in all required fields.");
+      return;
+    }
+    setIsSubmitting(true);
+    try {
+      const payload = {
+        firstName: form.firstName,
+        lastName: form.lastName,
+        professionalTitle: form.title,
+        bio: form.bio || undefined,
+        email: form.email,
+        phone: form.phone || undefined,
+        linkedInUrl: form.linkedin || undefined,
+        location: form.location || undefined,
+        assignedPrograms: form.assignedPrograms,
+        availabilityStatus: form.availability === "full-time" ? "Active" : "On Leave",
+      };
+      const res = await fetch("/api/instructors", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => null);
+        throw new Error(err?.error || `Failed to create instructor (${res.status})`);
+      }
+      toast.success("Instructor profile created!");
+      router.push("/admin/instructors");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Failed to create instructor.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -265,11 +304,11 @@ export default function AddInstructorPage() {
               </h2>
 
               <div className="space-y-1">
-                {AVAILABLE_PROGRAMS.map((prog) => {
-                  const isChecked = form.assignedPrograms.includes(prog.id);
+                {availablePrograms.length > 0 ? availablePrograms.map((prog) => {
+                  const isChecked = form.assignedPrograms.includes(prog._id);
                   return (
                     <label
-                      key={prog.id}
+                      key={prog._id}
                       className={`flex items-center gap-3 px-4 py-3 rounded-lg cursor-pointer transition-all border ${
                         isChecked
                           ? "bg-primary/5 border-primary/20 dark:bg-primary/10 dark:border-primary/30"
@@ -279,7 +318,7 @@ export default function AddInstructorPage() {
                       <input
                         type="checkbox"
                         checked={isChecked}
-                        onChange={() => toggleProgram(prog.id)}
+                        onChange={() => toggleProgram(prog._id)}
                         className="h-4 w-4 rounded border-slate-300 text-primary focus:ring-primary/20 dark:border-slate-600 dark:bg-slate-700 dark:checked:bg-primary cursor-pointer"
                       />
                       <span className={`text-sm font-medium ${isChecked ? "text-slate-900 dark:text-white" : "text-slate-600 dark:text-slate-400"}`}>
@@ -287,7 +326,9 @@ export default function AddInstructorPage() {
                       </span>
                     </label>
                   );
-                })}
+                }) : (
+                  <p className="text-sm text-slate-400 italic px-4 py-3">No programs available. Create a program first.</p>
+                )}
               </div>
             </div>
 
@@ -381,10 +422,20 @@ export default function AddInstructorPage() {
           </Link>
           <button
             type="submit"
-            className="px-6 py-2.5 rounded-lg bg-primary hover:bg-primary-dark text-white text-sm font-bold shadow-lg shadow-primary/20 transition-all flex items-center gap-2"
+            disabled={isSubmitting}
+            className="px-6 py-2.5 rounded-lg bg-primary hover:bg-primary-dark text-white text-sm font-bold shadow-lg shadow-primary/20 transition-all flex items-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
           >
-            <span className="material-symbols-outlined text-sm">check</span>
-            Create Instructor
+            {isSubmitting ? (
+              <>
+                <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
+                Saving...
+              </>
+            ) : (
+              <>
+                <span className="material-symbols-outlined text-sm">check</span>
+                Create Instructor
+              </>
+            )}
           </button>
         </div>
       </form>
