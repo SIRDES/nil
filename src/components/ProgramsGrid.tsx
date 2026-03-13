@@ -21,13 +21,13 @@ interface Program {
 function getBadgeClasses(level?: string): string {
   switch (level) {
     case "Beginner":
-      return "bg-blue-50 text-blue-700 ring-blue-700/10 dark:bg-blue-400/10 dark:text-blue-400 dark:ring-blue-400/30";
+      return "bg-blue-50 text-blue-700 ring-blue-700/10";
     case "Intermediate":
-      return "bg-purple-50 text-purple-700 ring-purple-700/10 dark:bg-purple-400/10 dark:text-purple-400 dark:ring-purple-400/30";
+      return "bg-purple-50 text-purple-700 ring-purple-700/10";
     case "Advanced":
-      return "bg-indigo-50 text-indigo-700 ring-indigo-700/10 dark:bg-indigo-400/10 dark:text-indigo-400 dark:ring-indigo-400/30";
+      return "bg-indigo-50 text-indigo-700 ring-indigo-700/10";
     default:
-      return "bg-emerald-50 text-emerald-700 ring-emerald-700/10 dark:bg-emerald-400/10 dark:text-emerald-400 dark:ring-emerald-400/30";
+      return "bg-emerald-50 text-emerald-700 ring-emerald-700/10";
   }
 }
 
@@ -45,16 +45,16 @@ function getFallbackIcon(category?: string): string {
 /* ─── Skeleton Loader ─────────────────────────────────────────── */
 function ProgramCardSkeleton() {
   return (
-    <div className="flex flex-col overflow-hidden rounded-2xl bg-white dark:bg-navy-card border border-slate-100 dark:border-slate-800 animate-pulse">
-      <div className="aspect-video w-full bg-slate-200 dark:bg-slate-800" />
+    <div className="flex flex-col overflow-hidden rounded-2xl bg-white border border-slate-100 animate-pulse">
+      <div className="aspect-video w-full bg-slate-200" />
       <div className="p-6 space-y-3">
-        <div className="h-4 w-20 rounded bg-slate-200 dark:bg-slate-700" />
-        <div className="h-6 w-3/4 rounded bg-slate-200 dark:bg-slate-700" />
-        <div className="h-4 w-full rounded bg-slate-200 dark:bg-slate-700" />
-        <div className="h-4 w-2/3 rounded bg-slate-200 dark:bg-slate-700" />
-        <div className="pt-4 border-t border-slate-100 dark:border-slate-700 flex justify-between">
-          <div className="h-4 w-24 rounded bg-slate-200 dark:bg-slate-700" />
-          <div className="h-4 w-16 rounded bg-slate-200 dark:bg-slate-700" />
+        <div className="h-4 w-20 rounded bg-slate-200" />
+        <div className="h-6 w-3/4 rounded bg-slate-200" />
+        <div className="h-4 w-full rounded bg-slate-200" />
+        <div className="h-4 w-2/3 rounded bg-slate-200" />
+        <div className="pt-4 border-t border-slate-100 flex justify-between">
+          <div className="h-4 w-24 rounded bg-slate-200" />
+          <div className="h-4 w-16 rounded bg-slate-200" />
         </div>
       </div>
     </div>
@@ -66,16 +66,16 @@ function ProgramCard({ program }: { program: Program }) {
   const slug = program._id;
 
   return (
-    <div className="group relative flex flex-col overflow-hidden rounded-2xl bg-white dark:bg-navy-card shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/10 border border-slate-100 dark:border-slate-800">
+    <div className="group relative flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/10 border border-slate-100">
       {/* Thumbnail */}
-      <div className="aspect-video w-full overflow-hidden bg-slate-200 dark:bg-slate-800 relative">
+      <div className="aspect-video w-full overflow-hidden bg-slate-200 relative">
         {program.bannerUrl ? (
           <div
             className="h-full w-full bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
             style={{ backgroundImage: `url("${program.bannerUrl}")` }}
           />
         ) : (
-          <div className="h-full w-full flex items-center justify-center bg-gradient-to-br from-primary/10 to-primary/5 dark:from-primary/20 dark:to-primary/10">
+          <div className="h-full w-full flex items-center justify-center bg-gradient-to-br from-primary/10 to-primary/5">
             <span className="material-symbols-outlined text-6xl text-primary/40">
               {getFallbackIcon(program.category || program.name)}
             </span>
@@ -94,22 +94,22 @@ function ProgramCard({ program }: { program: Program }) {
             {program.difficultyLevel || program.category || "Program"}
           </span>
           {!program.isRegistrationOpen && (
-            <span className="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-700/10 dark:bg-red-400/10 dark:text-red-400">
+            <span className="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-700/10">
               Closed
             </span>
           )}
         </div>
 
-        <h4 className="text-xl font-bold text-slate-900 dark:text-white">
+        <h4 className="text-xl font-bold text-slate-900">
           {program.name}
         </h4>
 
-        <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-600 dark:text-slate-400 line-clamp-3">
+        <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-600 line-clamp-3">
           {program.description}
         </p>
 
         {/* Duration & Tuition */}
-        <div className="mt-4 flex items-center gap-4 text-sm text-slate-500 dark:text-slate-400">
+        <div className="mt-4 flex items-center gap-4 text-sm text-slate-500">
           <span className="flex items-center gap-1">
             <span className="material-symbols-outlined text-base text-primary">
               schedule
@@ -124,7 +124,7 @@ function ProgramCard({ program }: { program: Program }) {
           </span>
         </div>
 
-        <div className="mt-5 pt-4 border-t border-slate-100 dark:border-slate-700">
+        <div className="mt-5 pt-4 border-t border-slate-100">
           <Link
             href={`/programs/${slug}`}
             className="flex items-center text-sm font-semibold text-primary hover:text-primary-dark transition-colors"
@@ -181,7 +181,7 @@ export default function ProgramsGrid() {
         <span className="material-symbols-outlined text-4xl text-slate-300 mb-3">
           error_outline
         </span>
-        <p className="text-slate-500 dark:text-slate-400">
+        <p className="text-slate-500">
           Unable to load programs. Please try again later.
         </p>
       </div>
@@ -195,10 +195,10 @@ export default function ProgramsGrid() {
         <span className="material-symbols-outlined text-5xl text-slate-300 mb-3">
           local_library
         </span>
-        <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1">
+        <h3 className="text-lg font-bold text-slate-900 mb-1">
           No programs available at this time
         </h3>
-        <p className="text-sm text-slate-500 dark:text-slate-400 max-w-sm">
+        <p className="text-sm text-slate-500 max-w-sm">
           We&apos;re preparing exciting new programs. Check back soon or contact us for updates.
         </p>
       </div>

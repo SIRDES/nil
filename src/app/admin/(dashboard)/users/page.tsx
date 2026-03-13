@@ -255,13 +255,17 @@ export default function AdminUsersPage() {
                       <tr key={user._id} className="hover:bg-slate-50/80 dark:hover:bg-slate-800/30 transition-colors group">
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-3">
-                            {user.avatarUrl ? (
+                            {/* {user.avatarUrl ? (
                               <img src={user.avatarUrl} alt={`${user.firstName} ${user.lastName}`} className="size-10 rounded-full object-cover shrink-0" />
                             ) : (
                               <div className={`flex size-10 shrink-0 items-center justify-center rounded-full text-white text-sm font-bold ${avatarColor}`}>
                                 {initials}
                               </div>
-                            )}
+                            )} */}
+
+                             <div className={`flex size-10 shrink-0 items-center justify-center rounded-full text-white text-sm font-bold ${avatarColor}`}>
+                                {initials}
+                              </div>
                             <div className="min-w-0">
                               <p className="text-sm font-semibold text-slate-900 dark:text-white truncate">
                                 {user.firstName} {user.lastName}

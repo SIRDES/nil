@@ -3,10 +3,10 @@ import ProgramsGrid from '@/components/ProgramsGrid';
 
 export default function Home() {
   return (
-    <div className="relative flex min-h-screen w-full flex-col group/design-root">
+    <div className="relative flex min-h-screen w-full flex-col">
       
       {/* Hero Section */}
-      <div className="relative overflow-hidden bg-navy-dark dark:bg-black py-20 sm:py-32">
+      <div className="relative overflow-hidden bg-navy-dark py-20 sm:py-32">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#1152d41a_1px,transparent_1px),linear-gradient(to_bottom,#1152d41a_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"></div>
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-10 lg:flex-row lg:items-center lg:gap-16">
@@ -66,12 +66,12 @@ export default function Home() {
       </div>
 
       {/* Programs Section — Now fetched from API */}
-      <div id="programs" className="bg-background-light dark:bg-background-dark py-24">
+      <div id="programs" className="py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mb-12 text-center">
             <h2 className="text-primary font-bold tracking-wide uppercase text-sm mb-3">Our Offerings</h2>
-            <h3 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl">Specialized Training Tracks</h3>
-            <p className="mt-4 text-lg text-slate-600 dark:text-slate-400">Select the path that matches your career ambitions.</p>
+            <h3 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">Specialized Training Tracks</h3>
+            <p className="mt-4 text-lg text-slate-600">Select the path that matches your career ambitions.</p>
           </div>
           
           <ProgramsGrid />
@@ -79,24 +79,24 @@ export default function Home() {
       </div>
 
       {/* Stats Section */}
-      <div className="border-y border-slate-200 dark:border-slate-800 bg-white dark:bg-navy-dark py-12">
+      <div className="bg-white border-y border-slate-200 py-12">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 gap-8 md:grid-cols-4 text-center">
             <div className="flex flex-col gap-1">
               <span className="text-4xl font-black text-primary">98%</span>
-              <span className="text-sm font-medium text-slate-500 dark:text-slate-400">Hiring Rate</span>
+              <span className="text-sm font-medium text-slate-500">Hiring Rate</span>
             </div>
             <div className="flex flex-col gap-1">
               <span className="text-4xl font-black text-primary">500+</span>
-              <span className="text-sm font-medium text-slate-500 dark:text-slate-400">Graduates</span>
+              <span className="text-sm font-medium text-slate-500">Graduates</span>
             </div>
             <div className="flex flex-col gap-1">
               <span className="text-4xl font-black text-primary">120+</span>
-              <span className="text-sm font-medium text-slate-500 dark:text-slate-400">Hiring Partners</span>
+              <span className="text-sm font-medium text-slate-500">Hiring Partners</span>
             </div>
             <div className="flex flex-col gap-1">
               <span className="text-4xl font-black text-primary">$75k</span>
-              <span className="text-sm font-medium text-slate-500 dark:text-slate-400">Avg. Starting Salary</span>
+              <span className="text-sm font-medium text-slate-500">Avg. Starting Salary</span>
             </div>
           </div>
         </div>

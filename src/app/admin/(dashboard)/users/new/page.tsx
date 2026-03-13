@@ -15,8 +15,8 @@ interface AddAdminForm {
   role: string;
   password: string;
   permissions: string[];
-  sendInvite: boolean;
-  enforce2FA: boolean;
+  // sendInvite: boolean;
+  // enforce2FA: boolean;
   accountStatus: "Active" | "Suspended" | "Pending Activation";
 }
 
@@ -96,8 +96,8 @@ export default function AddAdminPage() {
       role: "",
       password: "",
       permissions: ["analytics", "registrations"],
-      sendInvite: true,
-      enforce2FA: false,
+      // sendInvite: true,
+      // enforce2FA: false,
       accountStatus: "Active",
     },
   });
@@ -235,8 +235,8 @@ export default function AddAdminPage() {
 
         <div className="flex items-start gap-6">
           {/* Avatar Upload */}
-          <div className="flex flex-col items-center gap-2 shrink-0">
-            <button
+          {/* <div className="flex flex-col items-center gap-2 shrink-0"> */}
+            {/* <button
               id="avatar-upload-btn"
               type="button"
               onClick={() => fileInputRef.current?.click()}
@@ -260,17 +260,17 @@ export default function AddAdminPage() {
                     </span>
                   )}
                 </div>
-              )}
+              )} */}
 
               {/* Hover overlay */}
-              <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity">
+              {/* <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity">
                 <span className="material-symbols-outlined text-white text-xl">
                   photo_camera
                 </span>
-              </div>
-            </button>
+              </div> */}
+            {/* </button> */}
 
-            <input
+            {/* <input
               ref={fileInputRef}
               type="file"
               accept="image/*"
@@ -280,8 +280,8 @@ export default function AddAdminPage() {
 
             <span className="text-[11px] text-slate-400 text-center">
               Upload Photo
-            </span>
-          </div>
+            </span> */}
+          {/* </div> */}
 
           {/* 2x2 Input Grid */}
           <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -478,17 +478,17 @@ export default function AddAdminPage() {
 
         {/* ── Card 3: Account Preferences (2/5 width) ── */}
         <div className="lg:col-span-2 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm p-6 space-y-6 h-fit">
-          <h2 className="text-sm font-bold uppercase text-slate-500 dark:text-slate-400 tracking-wider flex items-center gap-2">
+          {/* <h2 className="text-sm font-bold uppercase text-slate-500 dark:text-slate-400 tracking-wider flex items-center gap-2">
             <span className="material-symbols-outlined text-lg text-primary">
               tune
             </span>
             Account Preferences
-          </h2>
+          </h2> */}
 
           {/* Toggle Switches */}
           <div className="space-y-4">
             {/* Send Invite */}
-            <Controller
+            {/* <Controller
               control={control}
               name="sendInvite"
               render={({ field }) => (
@@ -508,10 +508,10 @@ export default function AddAdminPage() {
                   />
                 </div>
               )}
-            />
+            /> */}
 
             {/* 2FA Enforcement */}
-            <Controller
+            {/* <Controller
               control={control}
               name="enforce2FA"
               render={({ field }) => (
@@ -531,7 +531,7 @@ export default function AddAdminPage() {
                   />
                 </div>
               )}
-            />
+            /> */}
           </div>
 
           {/* Account Status */}
