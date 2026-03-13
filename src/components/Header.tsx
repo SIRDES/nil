@@ -16,8 +16,8 @@ export default function Header() {
             <nav className="hidden md:flex flex-1 justify-center ml-8">
             <div className="flex items-center gap-8">
               <Link className="text-sm font-medium text-slate-600 hover:text-primary transition-colors" href="/programs">Programs</Link>
-              <Link className="text-sm font-medium text-slate-600 hover:text-primary transition-colors" href="/admissions">Admissions</Link>
-              <Link className="text-sm font-medium text-slate-600 hover:text-primary transition-colors" href="/about">About Us</Link>
+              {/* <Link className="text-sm font-medium text-slate-600 hover:text-primary transition-colors" href="/admissions">Admissions</Link> */}
+              <Link className="text-sm font-medium text-slate-600 hover:text-primary transition-colors" href="/about-us">About Us</Link>
               <Link className="text-sm font-medium text-slate-600 hover:text-primary transition-colors" href="/contact">Contact</Link>
             </div>
           </nav>
