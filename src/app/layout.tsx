@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Lexend } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import AuthContextProvider from "@/context/AuthContext";
 
 const lexend = Lexend({
@@ -28,11 +26,7 @@ export default function RootLayout({
       </head>
       <body className={`${lexend.variable} antialiased font-display flex flex-col min-h-screen bg-slate-50 text-slate-900`}>
         <AuthContextProvider>
-          <Header />
-          <main className="flex-grow">
-            {children}
-          </main>
-          <Footer />
+          {children}
         </AuthContextProvider>
       </body>
     </html>
