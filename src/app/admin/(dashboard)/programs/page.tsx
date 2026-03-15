@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import useFetch from "@/hooks/useFetch";
 import { CardGridSkeleton, ErrorBanner, EmptyState } from "@/components/admin/DataStates";
@@ -39,6 +39,18 @@ export default function ProgramsPage() {
   const { data: programs, loading, error, refetch } = useFetch<Program>("/api/programs");
   const [activeTab, setActiveTab] = useState("All");
   const [sortBy, setSortBy] = useState("Newest");
+  const [openMenuId, setOpenMenuId] = useState<string | null>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setOpenMenuId(null);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const filtered = programs.filter((p) => {
     if (activeTab === "All") return true;
@@ -135,10 +147,36 @@ export default function ProgramsPage() {
                       </span>
                     </div>
                   )}
-                  <div className="absolute top-3 right-3">
-                    <button className="p-1.5 rounded-lg bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm transition-colors">
+                  <div className="absolute top-3 right-3" ref={openMenuId === prog._id ? menuRef : null}>
+                    <button 
+                      onClick={() => setOpenMenuId(openMenuId === prog._id ? null : prog._id)}
+                      className="p-1.5 rounded-lg bg-black/20 text-white hover:bg-black/40 backdrop-blur-sm transition-colors"
+                    >
                       <span className="material-symbols-outlined text-lg">more_vert</span>
                     </button>
+                    
+                    {/* Dropdown Menu */}
+                    {openMenuId === prog._id && (
+                      <div className="absolute right-0 mt-2 w-48 rounded-xl bg-white dark:bg-slate-800 shadow-xl border border-slate-100 dark:border-slate-700 py-2 z-20 overflow-hidden text-left">
+                        <Link 
+                          href={`/admin/programs/${prog._id}/edit`} 
+                          className="w-full flex items-center gap-2 px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors"
+                        >
+                          <span className="material-symbols-outlined text-[18px]">edit</span>
+                          Edit Program
+                        </Link>
+                        <button 
+                          onClick={() => {
+                            setOpenMenuId(null);
+                            alert("Delete program functionality coming soon");
+                          }}
+                          className="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors text-left"
+                        >
+                          <span className="material-symbols-outlined text-[18px]">delete</span>
+                          Delete Program
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
 

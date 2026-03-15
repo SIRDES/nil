@@ -11,7 +11,31 @@ export async function GET() {
   try {
     await dbConnect();
 
-    const programs = await Program.find({}).sort({ createdAt: -1 }).lean();
+    const programs = await Program.aggregate([
+      {
+        $lookup: {
+          from: 'registrations',
+          localField: '_id',
+          foreignField: 'programId',
+          as: 'registrations',
+        }
+      },
+      {
+        $addFields: {
+          activeStudents: {
+            $size: {
+              $filter: {
+                input: '$registrations',
+                as: 'reg',
+                cond: { $in: ['$$reg.status', ['Enrolled', 'Pending']] }
+              }
+            }
+          }
+        }
+      },
+      { $project: { registrations: 0 } },
+      { $sort: { createdAt: -1 } }
+    ]);
 
     return NextResponse.json(programs, { status: 200 });
   } catch (error) {
