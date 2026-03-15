@@ -2,6 +2,9 @@
 
 import { useState } from "react";
 import AddRegistrationModal from "@/components/admin/AddRegistrationModal";
+import ViewRegistrationModal from "@/components/admin/ViewRegistrationModal";
+import EditRegistrationModal from "@/components/admin/EditRegistrationModal";
+import DeleteRegistrationModal from "@/components/admin/DeleteRegistrationModal";
 import useFetch from "@/hooks/useFetch";
 import { TableSkeleton, ErrorBanner, EmptyState } from "@/components/admin/DataStates";
 
@@ -12,10 +15,15 @@ interface Registration {
   lastName: string;
   email: string;
   phone?: string;
+  location?: string;
   programId: { _id: string; name: string; price: number } | string;
+  dateOfBirth?: string;
+  studentId?: string;
   status: string;
   paymentReceived: boolean;
+  internalNotes?: string;
   createdAt: string;
+  updatedAt?: string;
 }
 
 /* ─── Helpers ─────────────────────────────────────────────────── */
@@ -69,6 +77,20 @@ export default function RegistrationsPage() {
   const [showModal, setShowModal] = useState(false);
   const [programFilter, setProgramFilter] = useState("All Programs");
   const [statusFilter, setStatusFilter] = useState("All Statuses");
+
+  // Modal state for view / edit / delete
+  const [activeModal, setActiveModal] = useState<"view" | "edit" | "delete" | null>(null);
+  const [selectedRegistration, setSelectedRegistration] = useState<Registration | null>(null);
+
+  const openModal = (type: "view" | "edit" | "delete", reg: Registration) => {
+    setSelectedRegistration(reg);
+    setActiveModal(type);
+  };
+
+  const closeModal = () => {
+    setActiveModal(null);
+    setSelectedRegistration(null);
+  };
 
   // Derive unique program names from data
   const programNames = Array.from(new Set(registrations.map(getProgramName))).sort();
@@ -181,13 +203,25 @@ export default function RegistrationsPage() {
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
-                        <button className="text-slate-400 hover:text-primary transition-colors">
+                        <button
+                          onClick={() => openModal("view", r)}
+                          title="View details"
+                          className="text-slate-400 hover:text-primary transition-colors"
+                        >
                           <span className="material-symbols-outlined text-lg">visibility</span>
                         </button>
-                        <button className="text-slate-400 hover:text-primary transition-colors">
+                        <button
+                          onClick={() => openModal("edit", r)}
+                          title="Edit registration"
+                          className="text-slate-400 hover:text-primary transition-colors"
+                        >
                           <span className="material-symbols-outlined text-lg">edit</span>
                         </button>
-                        <button className="text-slate-400 hover:text-red-500 transition-colors">
+                        <button
+                          onClick={() => openModal("delete", r)}
+                          title="Delete registration"
+                          className="text-slate-400 hover:text-red-500 transition-colors"
+                        >
                           <span className="material-symbols-outlined text-lg">delete</span>
                         </button>
                       </div>
@@ -210,6 +244,33 @@ export default function RegistrationsPage() {
       </div>
 
       {showModal && <AddRegistrationModal onClose={() => { setShowModal(false); refetch(); }} />}
+
+      {activeModal === "view" && selectedRegistration && (
+        <ViewRegistrationModal registration={selectedRegistration} onClose={closeModal} />
+      )}
+
+      {activeModal === "edit" && selectedRegistration && (
+        <EditRegistrationModal
+          registration={selectedRegistration}
+          onClose={closeModal}
+          onSaved={() => {
+            closeModal();
+            refetch();
+          }}
+        />
+      )}
+
+      {activeModal === "delete" && selectedRegistration && (
+        <DeleteRegistrationModal
+          registrationId={selectedRegistration._id}
+          studentName={`${selectedRegistration.firstName} ${selectedRegistration.lastName}`}
+          onClose={closeModal}
+          onDeleted={() => {
+            closeModal();
+            refetch();
+          }}
+        />
+      )}
     </div>
   );
 }

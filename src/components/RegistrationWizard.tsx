@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -8,7 +8,19 @@ import { DayPicker } from 'react-day-picker';
 import { differenceInYears, format } from 'date-fns';
 import "react-day-picker/style.css";
 
+// Program type returned from the API
+interface ProgramOption {
+  _id: string;
+  name: string;
+  category?: string;
+  duration: string;
+  price: number;
+  isRegistrationOpen: boolean;
+  isPubliclyVisible: boolean;
+}
+
 // 1. Define Zod schema
+// `program` now stores the MongoDB ObjectId string of the selected program
 const RegistrationSchema = z.object({
   firstName: z.string().min(1, "First Name is required"),
   lastName: z.string().min(1, "Last Name is required"),
@@ -21,43 +33,37 @@ const RegistrationSchema = z.object({
   dateOfBirth: z.date().optional(),
   
   agreeTerms: z.boolean(),
-}).superRefine((data, ctx) => {
-  if (data.program === "Adult Education (Legon/UCC Mature Entrance)") {
-    if (!data.dateOfBirth) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "Date of Birth is required to verify your age.",
-        path: ["dateOfBirth"],
-      });
-    } else {
-      const age = differenceInYears(new Date(), data.dateOfBirth);
-      if (age < 25) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: "You must be at least 25 years old to enroll in the Mature Entrance program.",
-          path: ["dateOfBirth"],
-        });
-      }
-    }
-  }
 });
 
 type RegistrationFormData = z.infer<typeof RegistrationSchema>;
-
-const PROGRAM_OPTIONS = [
-  { id: "junior", title: "Junior Coders Program (Beginners)", duration: "3 months", tuition: "$2,500" },
-  { id: "accelerator", title: "Developer Accelerator Program (Intermediate)", duration: "4 months", tuition: "$5,000" },
-  { id: "ai", title: "AI & Emerging Technologies Program (Advanced)", duration: "6 months", tuition: "$8,500" },
-  { id: "mature", title: "Adult Education (Legon/UCC Mature Entrance)", duration: "3 months", tuition: "$1,800" },
-  { id: "jhs", title: "Adult Education (JHS pre-SHS)", duration: "Variable", tuition: "$1,200" },
-];
 
 export default function RegistrationWizard() {
   const [step, setStep] = useState<number>(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
+  const [programs, setPrograms] = useState<ProgramOption[]>([]);
+  const [programsLoading, setProgramsLoading] = useState(true);
   const totalSteps = 3;
+
+  // Fetch programs from the database on mount
+  useEffect(() => {
+    async function fetchPrograms() {
+      try {
+        const res = await fetch('/api/programs');
+        if (res.ok) {
+          const data: ProgramOption[] = await res.json();
+          // Only show programs that are publicly visible and have registration open
+          setPrograms(data.filter(p => p.isPubliclyVisible && p.isRegistrationOpen));
+        }
+      } catch (err) {
+        console.error('Failed to fetch programs:', err);
+      } finally {
+        setProgramsLoading(false);
+      }
+    }
+    fetchPrograms();
+  }, []);
 
   const {
     register,
@@ -78,21 +84,47 @@ export default function RegistrationWizard() {
   });
 
   const selectedProgramValue = watch("program");
-  const selectedProgramDetails = PROGRAM_OPTIONS.find(p => p.title === selectedProgramValue);
+  const selectedProgramDetails = programs.find(p => p._id === selectedProgramValue);
   const agreeTermsVal = watch("agreeTerms");
+
+  // Check if selected program is a Mature Entrance program
+  const isMatureEntrance = selectedProgramDetails
+    ? (selectedProgramDetails.name?.toLowerCase().includes('mature entrance') ||
+       selectedProgramDetails.category?.toLowerCase().includes('mature entrance'))
+    : false;
 
   const nextStep = async () => {
     let fieldsToValidate: (keyof RegistrationFormData)[] = [];
     if (step === 1) {
       fieldsToValidate = ['firstName', 'lastName', 'email', 'phone', 'city', 'country'];
     } else if (step === 2) {
-      fieldsToValidate = ['program', 'dateOfBirth'];
+      fieldsToValidate = ['program'];
     }
 
     const isValid = await trigger(fieldsToValidate);
-    if (isValid) {
-      setStep((prev) => Math.min(prev + 1, totalSteps));
+    if (!isValid) return;
+
+    // Client-side Mature Entrance age validation
+    if (step === 2 && isMatureEntrance) {
+      const dob = watch('dateOfBirth');
+      if (!dob) {
+        setError('dateOfBirth', {
+          type: 'manual',
+          message: 'Date of Birth is required to verify your age.',
+        });
+        return;
+      }
+      const age = differenceInYears(new Date(), dob);
+      if (age < 25) {
+        setError('dateOfBirth', {
+          type: 'manual',
+          message: 'You must be at least 25 years old to enroll in the Mature Entrance program.',
+        });
+        return;
+      }
     }
+
+    setStep((prev) => Math.min(prev + 1, totalSteps));
   };
 
   const prevStep = () => {
@@ -115,7 +147,7 @@ export default function RegistrationWizard() {
         email: data.email,
         phone: data.phone,
         location: `${data.city}, ${data.country}`,
-        programId: data.program, // will need to map to an ObjectId in production
+        programId: data.program, // data.program now contains the real MongoDB ObjectId
         dateOfBirth: data.dateOfBirth?.toISOString() || undefined,
       };
 
@@ -308,15 +340,15 @@ export default function RegistrationWizard() {
                 {...register("program")}
                 className={`border rounded-xl px-4 h-12 bg-white dark:bg-slate-900 text-text-main dark:text-white focus:ring-2 focus:ring-primary ${errors.program ? 'border-red-500' : 'border-slate-200 dark:border-slate-700'}`}
               >
-                <option value="">-- Select a program --</option>
-                {PROGRAM_OPTIONS.map((p) => (
-                  <option key={p.id} value={p.title}>{p.title}</option>
+                <option value="">{programsLoading ? 'Loading programs...' : '-- Select a program --'}</option>
+                {programs.map((p) => (
+                  <option key={p._id} value={p._id}>{p.name}</option>
                 ))}
               </select>
               {errors.program && <span className="text-xs text-red-500 font-medium">{errors.program.message}</span>}
             </div>
 
-            {selectedProgramValue === "Adult Education (Legon/UCC Mature Entrance)" && (
+            {isMatureEntrance && (
               <div className="mt-6 p-6 rounded-xl border-2 border-primary/20 bg-primary/5 dark:bg-primary/10">
                 <div className="flex items-center gap-3 mb-4">
                   <span className="material-symbols-outlined text-primary text-2xl">verified_user</span>
@@ -414,7 +446,7 @@ export default function RegistrationWizard() {
                     <dt className="text-slate-500 dark:text-slate-400">Location</dt>
                     <dd className="col-span-2 font-medium text-slate-900 dark:text-white">{watch("city")}, {watch("country")}</dd>
                   </div>
-                  {watch("dateOfBirth") && watch("program") === "Adult Education (Legon/UCC Mature Entrance)" && (
+                  {watch("dateOfBirth") && isMatureEntrance && (
                     <div className="grid grid-cols-3">
                       <dt className="text-slate-500 dark:text-slate-400">DOB</dt>
                       <dd className="col-span-2 font-medium text-slate-900 dark:text-white">
@@ -434,7 +466,7 @@ export default function RegistrationWizard() {
                     </button>
                   </div>
                   <p className="font-bold text-primary mb-2 leading-tight pr-4">
-                    {selectedProgramDetails?.title || "None Selected"}
+                    {selectedProgramDetails?.name || "None Selected"}
                   </p>
                   <div className="flex gap-4 mt-4">
                     <div className="flex flex-col">
@@ -445,7 +477,7 @@ export default function RegistrationWizard() {
                 </div>
                 <div className="mt-6 pt-4 border-t border-primary/10 flex justify-between items-end">
                   <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Tuition Fee</span>
-                  <span className="text-2xl font-black text-slate-900 dark:text-white">{selectedProgramDetails?.tuition || "--"}</span>
+                  <span className="text-2xl font-black text-slate-900 dark:text-white">{selectedProgramDetails ? `$${selectedProgramDetails.price.toLocaleString()}` : "--"}</span>
                 </div>
               </div>
             </div>
