@@ -148,7 +148,7 @@ export default function RegistrationWizard() {
         phone: data.phone,
         location: `${data.city}, ${data.country}`,
         programId: data.program, // data.program now contains the real MongoDB ObjectId
-        dateOfBirth: data.dateOfBirth?.toISOString() || undefined,
+        ...(data.dateOfBirth ? { dateOfBirth: data.dateOfBirth.toISOString() } : {}),
       };
 
       const res = await fetch("/api/register", {

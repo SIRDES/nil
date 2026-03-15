@@ -56,21 +56,23 @@ export default function EditRegistrationModal({
     setError(null);
 
     try {
+      const payload = {
+        firstName: firstName.trim(),
+        lastName: lastName.trim(),
+        email: email.trim(),
+        phone: phone.trim(),
+        location: location.trim(),
+        status,
+        paymentReceived,
+        ...(studentId.trim() ? { studentId: studentId.trim() } : {}),
+        ...(dateOfBirth ? { dateOfBirth } : {}),
+        ...(internalNotes.trim() ? { internalNotes: internalNotes.trim() } : {}),
+      };
+
       const res = await fetch(`/api/register/${registration._id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          firstName,
-          lastName,
-          email,
-          phone,
-          location,
-          status,
-          paymentReceived,
-          studentId: studentId || undefined,
-          dateOfBirth: dateOfBirth || undefined,
-          internalNotes: internalNotes || undefined,
-        }),
+        body: JSON.stringify(payload),
       });
 
       if (!res.ok) {
@@ -215,13 +217,13 @@ export default function EditRegistrationModal({
               </div>
               <div className="flex flex-col gap-1.5">
                 <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">
-                  Student ID <span className="text-slate-400 text-xs font-normal">(optional)</span>
+                  Student ID <span className="text-slate-400 text-xs font-normal">(optional, auto-generated)</span>
                 </label>
                 <input
                   type="text"
                   value={studentId}
                   onChange={(e) => setStudentId(e.target.value)}
-                  placeholder="STU-XXX"
+                  placeholder="Leave blank to auto-generate"
                   className={`${inputClass} font-mono`}
                 />
               </div>

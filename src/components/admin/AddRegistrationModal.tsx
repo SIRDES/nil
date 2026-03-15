@@ -88,31 +88,35 @@ export default function AddRegistrationModal({ onClose }: AddRegistrationModalPr
     setError(null);
 
     try {
+      const payload = {
+        firstName: firstName.trim(),
+        lastName: lastName.trim(),
+        email: email.trim(),
+        phone: phone.trim(),
+        location: location.trim(),
+        programId,
+        status,
+        paymentReceived,
+        ...(studentId.trim() ? { studentId: studentId.trim() } : {}),
+        ...(dateOfBirth ? { dateOfBirth } : {}),
+        ...(internalNotes.trim() ? { internalNotes: internalNotes.trim() } : {}),
+      };
+
       const res = await fetch("/api/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          firstName: firstName.trim(),
-          lastName: lastName.trim(),
-          email: email.trim(),
-          phone: phone.trim(),
-          location: location.trim(),
-          programId,
-          status,
-          paymentReceived,
-          studentId: studentId.trim() || undefined,
-          dateOfBirth: dateOfBirth || undefined,
-          internalNotes: internalNotes.trim() || undefined,
-        }),
+        body: JSON.stringify(payload),
       });
 
       if (!res.ok) {
         const data = await res.json();
+        console.log(data)
         throw new Error(data.details || data.error || "Failed to create registration");
       }
 
       onClose(); // closes modal & triggers refetch in parent
     } catch (err) {
+      console.log(err)
       setError(err instanceof Error ? err.message : "Something went wrong");
     } finally {
       setSaving(false);
@@ -238,10 +242,10 @@ export default function AddRegistrationModal({ onClose }: AddRegistrationModalPr
                 {fieldErrors.dateOfBirth && <span className="text-xs text-red-500 font-medium">{fieldErrors.dateOfBirth}</span>}
               </div>
               <div className="flex flex-col gap-1.5">
-                <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">Student ID <span className="text-slate-400 text-xs font-normal">(optional)</span></label>
+                <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">Student ID <span className="text-slate-400 text-xs font-normal">(optional, auto-generated)</span></label>
                 <input
                   type="text"
-                  placeholder="STU-XXX"
+                  placeholder="Leave blank to auto-generate"
                   value={studentId}
                   onChange={(e) => setStudentId(e.target.value)}
                   className={`${inputClass()} font-mono`}

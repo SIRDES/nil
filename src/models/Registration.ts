@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document, Model, Types } from 'mongoose';
+import Counter from './Counter';
 
 export interface IRegistration extends Document {
   firstName: string;
@@ -40,6 +41,18 @@ const RegistrationSchema = new Schema<IRegistration>({
   paymentReceived: { type: Boolean, default: false },
   internalNotes: { type: String },
 }, { timestamps: true });
+
+RegistrationSchema.pre<IRegistration>('save', async function () {
+  if (this.isNew && !this.studentId) {
+    const counter = await Counter.findByIdAndUpdate(
+      { _id: 'studentId' },
+      { $inc: { seq: 1 } },
+      { returnDocument: 'after', upsert: true }
+    );
+    // Pad to 4 digits (e.g., 0001)
+    this.studentId = String(counter?.seq || 1).padStart(4, '0');
+  }
+});
 
 const Registration: Model<IRegistration> = mongoose.models.Registration || mongoose.model<IRegistration>('Registration', RegistrationSchema);
 
