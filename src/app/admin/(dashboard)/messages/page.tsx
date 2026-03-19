@@ -136,8 +136,8 @@ function MessageCard({
 /* ─── Message Detail Component ────────────────────────────────── */
 function MessageDetail({ message, onStatusChange }: { message: Message; onStatusChange: () => void }) {
   const [isResolved, setIsResolved] = useState(message.status === "Resolved");
-  const [replyText, setReplyText] = useState("");
-  const [sendCopy, setSendCopy] = useState(false);
+  // const [replyText, setReplyText] = useState("");
+  // const [sendCopy, setSendCopy] = useState(false);
   const initials = getInitials(message.name);
   const avatarColor = getAvatarColor(message._id);
 
@@ -178,7 +178,7 @@ function MessageDetail({ message, onStatusChange }: { message: Message; onStatus
         <div className="ml-auto">
           <button
             onClick={toggleResolved}
-            className={`inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-semibold transition-all duration-200 ring-1 ring-inset ${
+            className={`inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-semibold transition-all duration-200 ring-1 ring-inset cursor-pointer ${
               isResolved
                 ? "bg-emerald-50 text-emerald-700 ring-emerald-600/20"
                 : "bg-slate-100 text-slate-500 ring-slate-300"
@@ -187,7 +187,7 @@ function MessageDetail({ message, onStatusChange }: { message: Message; onStatus
             <span className={`flex size-4 items-center justify-center rounded-full ${isResolved ? "bg-emerald-500" : "bg-slate-400"}`}>
               <span className="material-symbols-outlined text-white text-[10px]">check</span>
             </span>
-            Mark Resolved
+            {isResolved ? "Mark as New" : "Mark as Resolved"}
           </button>
         </div>
       </div>
@@ -238,7 +238,7 @@ function MessageDetail({ message, onStatusChange }: { message: Message; onStatus
       </div>
 
       {/* Quick Reply Box */}
-      <div className="border-t border-slate-200 bg-white px-6 py-4">
+      {/* <div className="border-t border-slate-200 bg-white px-6 py-4">
         <div className="flex items-center justify-between mb-3">
           <h4 className="text-sm font-bold text-slate-900">Quick Reply</h4>
           <button className="text-sm font-semibold text-primary hover:text-primary-dark transition-colors">
@@ -278,7 +278,7 @@ function MessageDetail({ message, onStatusChange }: { message: Message; onStatus
             Send Reply
           </button>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

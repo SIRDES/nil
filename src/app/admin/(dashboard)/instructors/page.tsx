@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import useFetch from "@/hooks/useFetch";
 import { CardGridSkeleton, ErrorBanner, EmptyState } from "@/components/admin/DataStates";
+import toast from "react-hot-toast";
 
 /* ─── Types ───────────────────────────────────────────────────── */
 interface Instructor {
@@ -81,6 +82,19 @@ export default function InstructorsPage() {
   const [searchQuery, setSearchQuery] = useState("");
 
   const available = instructors.filter((i) => i.availabilityStatus === "Available").length;
+
+  const handleDelete = async (id: string, name: string) => {
+    if (!confirm(`Are you sure you want to delete instructor ${name}?`)) return;
+
+    try {
+      const res = await fetch(`/api/instructors/${id}`, { method: "DELETE" });
+      if (!res.ok) throw new Error("Failed to delete instructor");
+      toast.success("Instructor deleted successfully");
+      refetch();
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Error deleting instructor");
+    }
+  };
 
   const metrics = [
     { label: "Active Instructors", value: String(available), icon: "people", color: "blue" },
@@ -210,13 +224,25 @@ export default function InstructorsPage() {
 
                 {/* Action Buttons */}
                 <div className="flex items-center gap-2 pt-4 border-t border-slate-100 dark:border-slate-800">
-                  <button className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 text-sm font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
-                    <span className="material-symbols-outlined text-base">edit</span>
-                    Edit Profile
-                  </button>
-                  <button className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-primary/10 text-primary text-sm font-semibold hover:bg-primary/20 transition-colors">
-                    <span className="material-symbols-outlined text-base">mail</span>
-                    Message
+                  <Link 
+                    href={`/admin/instructors/${inst._id}`}
+                    className="flex text-xs items-center justify-center gap-1.5 px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+                  >
+                    <span className="material-symbols-outlined text-[16px]">visibility</span>
+                    
+                  </Link>
+                  <Link 
+                    href={`/admin/instructors/${inst._id}/edit`}
+                    className="flex-1 text-xs flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+                  >
+                    <span className="material-symbols-outlined text-[16px]">edit</span>
+                  </Link>
+                  <button 
+                    onClick={() => handleDelete(inst._id, fullName)}
+                    className="flex text-xs items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400 font-semibold hover:bg-red-100 dark:hover:bg-red-500/20 transition-colors"
+                  >
+                    <span className="material-symbols-outlined text-[16px]">delete</span>
+                    
                   </button>
                 </div>
               </div>

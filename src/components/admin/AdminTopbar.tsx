@@ -35,7 +35,7 @@ function getInitials(): string {
         {/* Profile */}
         <div className="flex items-center gap-3">
           <div className="flex flex-col items-end">
-            <span className="text-sm font-semibold text-slate-900">{user?.firstName?.toUpperCase()}</span>
+            <span className="text-sm font-semibold text-slate-500">{user?.firstName?.toUpperCase()}</span>
             <span className="text-xs text-slate-500">{user?.role}</span>
           </div>
           <div className="flex size-9 items-center justify-center rounded-full bg-primary text-white text-sm font-bold">

@@ -7,6 +7,34 @@ interface RouteParams {
 }
 
 /**
+ * GET /api/instructors/[id]
+ * Fetch a single instructor by their MongoDB _id.
+ */
+export async function GET(request: NextRequest, { params }: RouteParams) {
+  try {
+    await dbConnect();
+    const { id } = await params;
+
+    const instructor = await Instructor.findById(id).populate('assignedPrograms', 'name');
+
+    if (!instructor) {
+      return NextResponse.json({ error: 'Instructor not found' }, { status: 404 });
+    }
+
+    return NextResponse.json(instructor, { status: 200 });
+  } catch (error) {
+    console.error('Error fetching instructor:', error);
+
+    // Handle invalid ObjectId format
+    if (error instanceof Error && error.name === 'CastError') {
+      return NextResponse.json({ error: 'Invalid instructor ID format' }, { status: 400 });
+    }
+
+    return NextResponse.json({ error: 'Failed to fetch instructor' }, { status: 500 });
+  }
+}
+
+/**
  * PUT /api/instructors/[id]
  * Update an existing instructor by their MongoDB _id.
  * Expects JSON body with the fields to update
