@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/mongodb';
 import Instructor from '@/models/Instructor';
 import Program from '@/models/Program';
+import { checkAuth } from '@/lib/auth-utils';
 
 interface RouteParams {
   params: Promise<{ id: string }>;
@@ -43,6 +44,9 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
  */
 export async function PUT(request: NextRequest, { params }: RouteParams) {
   try {
+    const session = await checkAuth();
+    if (session instanceof NextResponse) return session;
+
     await dbConnect();
 
     const { id } = await params;
@@ -105,6 +109,9 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
  */
 export async function DELETE(_request: NextRequest, { params }: RouteParams) {
   try {
+    const session = await checkAuth();
+    if (session instanceof NextResponse) return session;
+
     await dbConnect();
 
     const { id } = await params;

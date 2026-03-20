@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/mongodb';
 import Message from '@/models/Message';
+import { checkAuth } from '@/lib/auth-utils';
 
 /**
  * GET /api/messages
@@ -8,6 +9,9 @@ import Message from '@/models/Message';
  */
 export async function GET() {
   try {
+    const session = await checkAuth();
+    if (session instanceof NextResponse) return session;
+
     await dbConnect();
 
     const messages = await Message.find({})

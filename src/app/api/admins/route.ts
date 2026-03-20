@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import dbConnect from '@/lib/mongodb';
 import AdminUser from '@/models/AdminUser';
+import { checkAuth } from '@/lib/auth-utils';
 
 const SALT_ROUNDS = 12;
 
@@ -12,6 +13,9 @@ const SALT_ROUNDS = 12;
  */
 export async function GET() {
   try {
+    const session = await checkAuth();
+    if (session instanceof NextResponse) return session;
+
     await dbConnect();
 
     const admins = await AdminUser.find({})
@@ -37,6 +41,9 @@ export async function GET() {
  */
 export async function POST(request: NextRequest) {
   try {
+    const session = await checkAuth();
+    if (session instanceof NextResponse) return session;
+
     await dbConnect();
 
     const body = await request.json();

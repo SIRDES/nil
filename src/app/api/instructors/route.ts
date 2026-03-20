@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/mongodb';
 import Instructor from '@/models/Instructor';
 import Program from '@/models/Program';
+import { checkAuth } from '@/lib/auth-utils';
 
 /**
  * GET /api/instructors
@@ -35,6 +36,9 @@ export async function GET() {
  */
 export async function POST(request: NextRequest) {
   try {
+    const session = await checkAuth();
+    if (session instanceof NextResponse) return session;
+
     await dbConnect();
 
     const body = await request.json();
