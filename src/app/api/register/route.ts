@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/mongodb';
 import Registration from '@/models/Registration';
 import Program from '@/models/Program';
+import { withAuth } from '@/lib/auth-utils';
 
 /**
  * Calculates age from a date of birth.
@@ -24,7 +25,7 @@ function calculateAge(dateOfBirth: Date): number {
  * Fetch all registrations for the admin dashboard.
  * Populates the programId field to display the program name.
  */
-export async function GET() {
+export const GET = withAuth(async () => {
   try {
     await dbConnect();
 
@@ -41,7 +42,7 @@ export async function GET() {
       { status: 500 }
     );
   }
-}
+});
 
 /**
  * POST /api/register

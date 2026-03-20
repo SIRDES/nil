@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/mongodb';
 import Registration from '@/models/Registration';
 import Program from '@/models/Program';
+import { withAuth } from '@/lib/auth-utils';
 
 interface RouteParams {
   params: Promise<{ id: string }>;
@@ -13,7 +14,55 @@ interface RouteParams {
  * Admins use this to change status (Pending → Enrolled),
  * toggle paymentReceived, and update internalNotes.
  */
-export async function PUT(request: NextRequest, { params }: RouteParams) {
+// export const GET = withAuth(async () => {
+
+// export async function PUT(request: NextRequest, { params }: RouteParams) {
+//   try {
+//     await dbConnect();
+
+//     const { id } = await params;
+//     const body = await request.json();
+
+//     const registration = await Registration.findByIdAndUpdate(id, body, {
+//       new: true,
+//       runValidators: true,
+//     }).populate('programId', 'name category duration price');
+
+//     if (!registration) {
+//       return NextResponse.json(
+//         { error: 'Registration not found' },
+//         { status: 404 }
+//       );
+//     }
+
+//     return NextResponse.json(registration, { status: 200 });
+//   } catch (error) {
+//     console.error('Error updating registration:', error);
+
+//     // Handle Mongoose validation errors
+//     if (error instanceof Error && error.name === 'ValidationError') {
+//       return NextResponse.json(
+//         { error: 'Validation failed', details: error.message },
+//         { status: 400 }
+//       );
+//     }
+
+//     // Handle invalid ObjectId format
+//     if (error instanceof Error && error.name === 'CastError') {
+//       return NextResponse.json(
+//         { error: 'Invalid registration ID format' },
+//         { status: 400 }
+//       );
+//     }
+
+//     return NextResponse.json(
+//       { error: 'Failed to update registration' },
+//       { status: 500 }
+//     );
+//   }
+// }
+
+export const PUT = withAuth(async (request: NextRequest, { params }: RouteParams) => {
   try {
     await dbConnect();
 
@@ -57,7 +106,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
       { status: 500 }
     );
   }
-}
+})
 
 /**
  * DELETE /api/register/[id]
