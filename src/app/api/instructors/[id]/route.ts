@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/mongodb';
 import Instructor from '@/models/Instructor';
+import Program from '@/models/Program';
 
 interface RouteParams {
   params: Promise<{ id: string }>;
