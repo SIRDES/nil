@@ -28,7 +28,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           throw new Error("Invalid credentials or inactive account.");
         }
 
-        if (user.status === "Inactive" || user.status === "Pending") {
+        if (user.status?.toLowerCase() === "inactive" || user.status?.toLowerCase() === "pending") {
           throw new Error("Invalid credentials or inactive account.");
         }
 
@@ -52,7 +52,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           firstName: user.firstName,
           lastName: user.lastName,
           status: user.status,
-          // lastLoginAt: user.lastLoginAt,
+          // lastLoginAt: user.lastLogin,
           avatarUrl: user.avatarUrl,
         };
       },

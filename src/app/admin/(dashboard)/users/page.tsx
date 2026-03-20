@@ -13,7 +13,7 @@ interface AdminUser {
   email: string;
   role: string;
   status: string;
-  lastLoginAt?: string;
+  lastLogin?: string;
   avatarUrl?: string;
 }
 
@@ -281,7 +281,7 @@ export default function AdminUsersPage() {
                           <StatusPill status={user.status} />
                         </td>
                         <td className="px-6 py-4 text-sm text-slate-500 dark:text-slate-400 whitespace-nowrap">
-                          {formatLastLogin(user.lastLoginAt)}
+                          {formatLastLogin(user.lastLogin)}
                         </td>
                         <td className="px-6 py-4">
                           <div className="flex justify-end">

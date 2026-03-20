@@ -12,7 +12,7 @@ declare module "next-auth" {
       lastName: string;
       role: "Super Admin" | "Registrar" | "Program Manager" | "Instructor" | "Editor" | "Support";
       status: "Active" | "Inactive" | "Suspended" | "Pending";
-      // lastLoginAt?: string;
+      lastLogin?: string;
       avatarUrl?: string;
     };
   }

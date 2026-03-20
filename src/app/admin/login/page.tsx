@@ -109,11 +109,6 @@ export default function AdminLogin() {
                 )}
               </button>
             </form>
-
-            <p className="mt-6 text-center text-xs text-slate-400">
-              Don&apos;t have an admin account?{" "}
-              <a href="#" className="text-primary hover:underline font-medium">Contact Support</a>
-            </p>
           </div>
         </div>
       </main>
