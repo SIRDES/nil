@@ -11,11 +11,11 @@ export default function Home() {
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-10 lg:flex-row lg:items-center lg:gap-16">
             <div className="flex flex-col items-start gap-6 lg:w-1/2">
-              <div className="inline-flex items-center rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-sm font-medium text-primary">
+              <div className="inline-flex items-center rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-sm font-medium text-slate-300">
                 <span className="mr-2 flex h-2 w-2 rounded-full bg-green-400 animate-pulse"></span>
                 Enrollment Closing Soon
               </div>
-              <h1 className="text-4xl font-black leading-tight tracking-tight sm:text-6xl">
+              <h1 className="text-4xl font-black leading-tight tracking-tight text-slate-300 sm:text-6xl">
                 April Cohorts <br/>
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-primary">Now Open</span>
               </h1>
@@ -27,19 +27,19 @@ export default function Home() {
                   Explore Programs
                   <span className="material-symbols-outlined text-lg">arrow_forward</span>
                 </Link>
-                <button className="h-12 px-8 rounded-full border border-slate-600 bg-transparent text-white font-medium hover:bg-white/10 transition-all flex items-center gap-2">
+                {/* <button className="h-12 px-8 rounded-full border border-slate-600 bg-transparent text-white font-medium hover:bg-white/10 transition-all flex items-center gap-2">
                   <span className="material-symbols-outlined text-lg">play_circle</span>
                   Watch Intro
-                </button>
+                </button> */}
               </div>
-              <div className="flex items-center gap-4 pt-8 text-sm text-slate-400">
+              {/* <div className="flex items-center gap-4 pt-8 text-sm text-slate-400">
                 <div className="flex -space-x-3">
                   <div className="h-10 w-10 rounded-full border-2 border-navy-dark bg-slate-700 bg-cover bg-center" style={{ backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuBnRD1deMpyojpD1DLbZ9YX8B2Yha6iDv9P1S7UHJaFVpIl3bqe7Pzza_i2OGEBqpw4VlQpT6wPKtlSsqA3JB8LbgIvdSfzvFNEXRu9UdQMZE-ZE-yEVAr3dAwZ2Gnoo8-zJ1TsmqwUKqQKaTB16qFF0qsOQ40MQ1E5uO63fpz_nrgBJynwwGJDO-VIKpd8EojqzSIzXcec0pnXd0cymEeoeLHGSn2F2B7XAmVUgs14K2aL8TY3IhV-JdeW3bKrRECc5_i0T2cg_OY")' }}></div>
                   <div className="h-10 w-10 rounded-full border-2 border-navy-dark bg-slate-700 bg-cover bg-center" style={{ backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuCIQSEUiqmSBOmj5pDTw0IFVxgnpHehUOkSiGxc8mczyVuR4KgnWw8frQPdhGVJ7ApF-679Ol3rI3-dgfrF0KHIeMEp-VVifMaI6xoVLcdwDkSa2eJCUKm94Mhda-tyec8Fr4x_qlNHv-ahFdGpyzmT1x-83m_oYFQ8BiujPXWguiF-HRYDgNoWPU5gSNqOJjX3HkMU7Zi5EpnHpAl6F10WgP6zdjiG9MUqsSKOwMxxFZuPvBCcCWn4v9a4Bonr6A5BaaS6r0AQThM")' }}></div>
                   <div className="h-10 w-10 rounded-full border-2 border-navy-dark bg-slate-700 bg-cover bg-center" style={{ backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuCBuCoa7zCxaTCkpfzug8jtkw95_vfiZzBCdiv7wCo79v7zg-Sdfxff3SFcwseFH0ASLqtLTsuCoNsWFfM-UO_qRXJBOA-hIh0CqmUsUWr6XKqPfqvBNNS0r62pvX1RcvcGAEzSydWbOJYtMTG3X5X3D6GeaMxX2OkBI9L5TMKTbl9maGQajR0tBWGmjpXqF-nxlKNnlvALT6eDYMVOPVfvrebn_bhhnmI1hdroAFUeOxk_4h1Oa7QmbXuHIVsgWSKTkPX-vGJw-No")' }}></div>
                 </div>
                 <p>Join 500+ successful graduates</p>
-              </div>
+              </div> */}
             </div>
             
             <div className="lg:w-1/2">
