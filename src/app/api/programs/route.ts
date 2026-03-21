@@ -64,13 +64,13 @@ export async function POST(request: NextRequest) {
  const body = await request.json();
 
  // Validate required fields
- const { name, description, duration, price } = body;
+ const { name, description, duration, price, difficultyLevel } = body;
 
- if (!name || !description || !duration || price == null) {
+ if (!name || !description || !duration || price == null || !difficultyLevel) {
  return NextResponse.json(
  {
  error: 'Missing required fields',
- details: 'name, description, duration, and price are required.',
+ details: 'name, description, duration, difficultyLevel and price are required.',
  },
  { status: 400 }
  );

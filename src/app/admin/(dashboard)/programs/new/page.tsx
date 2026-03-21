@@ -89,7 +89,7 @@ export default function AddProgramPage() {
 
  const handleSubmit = async (e: React.FormEvent) => {
  e.preventDefault();
- if (!form.name || !form.description || !form.duration || !form.price) {
+ if (!form.name || !form.description || !form.duration || !form.price || !form.difficulty) {
  toast.error("Please fill in all required fields.");
  return;
  }
@@ -99,7 +99,7 @@ export default function AddProgramPage() {
  name: form.name,
  description: form.description,
  duration: form.duration,
- difficultyLevel: form.difficulty || undefined,
+ difficultyLevel: form.difficulty,
  curriculumHighlights: form.curriculumHighlights.filter((h) => h.trim() !== ""),
  price: parseFloat(form.price),
  isPubliclyVisible: form.isPublished,
@@ -187,7 +187,7 @@ export default function AddProgramPage() {
  />
  </div>
  <div className="flex flex-col gap-1.5">
- <label className="text-sm font-semibold text-slate-700 ">Difficulty Level</label>
+ <label className="text-sm font-semibold text-slate-700 ">Difficulty Level <span className="text-red-500">*</span></label>
  <select
  value={form.difficulty}
  onChange={(e) => updateField("difficulty", e.target.value)}
@@ -197,7 +197,6 @@ export default function AddProgramPage() {
  <option value="Beginner">Beginner</option>
  <option value="Intermediate">Intermediate</option>
  <option value="Advanced">Advanced</option>
- <option value="Professional">Professional</option>
  </select>
  </div>
  </div>
@@ -388,12 +387,6 @@ export default function AddProgramPage() {
  >
  Cancel
  </Link>
- <button
- type="button"
- className="px-5 py-2.5 rounded-lg border border-slate-200 text-sm font-semibold text-slate-600 hover:bg-slate-100 transition-colors"
- >
- Save as Draft
- </button>
  <button
  type="submit"
  disabled={isSubmitting}

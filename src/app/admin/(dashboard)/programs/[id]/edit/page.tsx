@@ -121,7 +121,7 @@ export default function EditProgramPage({ params }: { params: Promise<{ id: stri
 
  const handleSubmit = async (e: React.FormEvent) => {
  e.preventDefault();
- if (!form.name || !form.description || !form.duration || !form.price) {
+ if (!form.name || !form.description || !form.duration || !form.price || !form.difficulty) {
  toast.error("Please fill in all required fields.");
  return;
  }
@@ -131,7 +131,7 @@ export default function EditProgramPage({ params }: { params: Promise<{ id: stri
  name: form.name,
  description: form.description,
  duration: form.duration,
- difficultyLevel: form.difficulty || undefined,
+ difficultyLevel: form.difficulty,
  curriculumHighlights: form.curriculumHighlights.filter((h) => h.trim() !== ""),
  price: parseFloat(form.price),
  isPubliclyVisible: form.isPublished,
@@ -234,7 +234,8 @@ export default function EditProgramPage({ params }: { params: Promise<{ id: stri
  />
  </div>
  <div className="flex flex-col gap-1.5">
- <label className="text-sm font-semibold text-slate-700 ">Difficulty Level</label>
+ <label className="text-sm font-semibold text-slate-700 ">Difficulty Level <span className="text-red-500">*</span></label>
+
  <select
  value={form.difficulty}
  onChange={(e) => updateField("difficulty", e.target.value)}
@@ -244,7 +245,6 @@ export default function EditProgramPage({ params }: { params: Promise<{ id: stri
  <option value="Beginner">Beginner</option>
  <option value="Intermediate">Intermediate</option>
  <option value="Advanced">Advanced</option>
- <option value="Professional">Professional</option>
  </select>
  </div>
  </div>

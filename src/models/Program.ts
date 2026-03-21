@@ -22,7 +22,7 @@ const ProgramSchema = new Schema<IProgram>({
  description: { type: String, required: true },
  category: { type: String },
  duration: { type: String, required: true },
- difficultyLevel: { type: String, enum: ['Beginner', 'Intermediate', 'Advanced'] },
+ difficultyLevel: { type: String, required: true, enum: ['Beginner', 'Intermediate', 'Advanced'] },
 
  curriculumHighlights: [{ type: String }],
 
