@@ -5,7 +5,7 @@ import Program from '@/models/Program';
 import { checkAuth } from '@/lib/auth-utils';
 
 interface RouteParams {
-  params: Promise<{ id: string }>;
+ params: Promise<{ id: string }>;
 }
 
 /**
@@ -15,52 +15,52 @@ interface RouteParams {
  * toggle paymentReceived, and update internalNotes.
  */
 export async function PUT(request: NextRequest, { params }: RouteParams) {
-  try {
-    const session = await checkAuth();
-    if (session instanceof NextResponse) return session;
+ try {
+ const session = await checkAuth();
+ if (session instanceof NextResponse) return session;
 
-    await dbConnect();
+ await dbConnect();
 
-    const { id } = await params;
-    const body = await request.json();
+ const { id } = await params;
+ const body = await request.json();
 
-    const registration = await Registration.findByIdAndUpdate(id, body, {
-      new: true,
-      runValidators: true,
-    }).populate('programId', 'name category duration price');
+ const registration = await Registration.findByIdAndUpdate(id, body, {
+ new: true,
+ runValidators: true,
+ }).populate('programId', 'name category duration price');
 
-    if (!registration) {
-      return NextResponse.json(
-        { error: 'Registration not found' },
-        { status: 404 }
-      );
-    }
+ if (!registration) {
+ return NextResponse.json(
+ { error: 'Registration not found' },
+ { status: 404 }
+ );
+ }
 
-    return NextResponse.json(registration, { status: 200 });
-  } catch (error) {
-    console.error('Error updating registration:', error);
+ return NextResponse.json(registration, { status: 200 });
+ } catch (error) {
+ console.error('Error updating registration:', error);
 
-    // Handle Mongoose validation errors
-    if (error instanceof Error && error.name === 'ValidationError') {
-      return NextResponse.json(
-        { error: 'Validation failed', details: error.message },
-        { status: 400 }
-      );
-    }
+ // Handle Mongoose validation errors
+ if (error instanceof Error && error.name === 'ValidationError') {
+ return NextResponse.json(
+ { error: 'Validation failed', details: error.message },
+ { status: 400 }
+ );
+ }
 
-    // Handle invalid ObjectId format
-    if (error instanceof Error && error.name === 'CastError') {
-      return NextResponse.json(
-        { error: 'Invalid registration ID format' },
-        { status: 400 }
-      );
-    }
+ // Handle invalid ObjectId format
+ if (error instanceof Error && error.name === 'CastError') {
+ return NextResponse.json(
+ { error: 'Invalid registration ID format' },
+ { status: 400 }
+ );
+ }
 
-    return NextResponse.json(
-      { error: 'Failed to update registration' },
-      { status: 500 }
-    );
-  }
+ return NextResponse.json(
+ { error: 'Failed to update registration' },
+ { status: 500 }
+ );
+ }
 }
 
 /**
@@ -68,41 +68,41 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
  * Remove a registration record by its MongoDB _id.
  */
 export async function DELETE(_request: NextRequest, { params }: RouteParams) {
-  try {
-    const session = await checkAuth();
-    if (session instanceof NextResponse) return session;
+ try {
+ const session = await checkAuth();
+ if (session instanceof NextResponse) return session;
 
-    await dbConnect();
+ await dbConnect();
 
-    const { id } = await params;
+ const { id } = await params;
 
-    const registration = await Registration.findByIdAndDelete(id);
+ const registration = await Registration.findByIdAndDelete(id);
 
-    if (!registration) {
-      return NextResponse.json(
-        { error: 'Registration not found' },
-        { status: 404 }
-      );
-    }
+ if (!registration) {
+ return NextResponse.json(
+ { error: 'Registration not found' },
+ { status: 404 }
+ );
+ }
 
-    return NextResponse.json(
-      { message: 'Registration deleted successfully' },
-      { status: 200 }
-    );
-  } catch (error) {
-    console.error('Error deleting registration:', error);
+ return NextResponse.json(
+ { message: 'Registration deleted successfully' },
+ { status: 200 }
+ );
+ } catch (error) {
+ console.error('Error deleting registration:', error);
 
-    // Handle invalid ObjectId format
-    if (error instanceof Error && error.name === 'CastError') {
-      return NextResponse.json(
-        { error: 'Invalid registration ID format' },
-        { status: 400 }
-      );
-    }
+ // Handle invalid ObjectId format
+ if (error instanceof Error && error.name === 'CastError') {
+ return NextResponse.json(
+ { error: 'Invalid registration ID format' },
+ { status: 400 }
+ );
+ }
 
-    return NextResponse.json(
-      { error: 'Failed to delete registration' },
-      { status: 500 }
-    );
-  }
+ return NextResponse.json(
+ { error: 'Failed to delete registration' },
+ { status: 500 }
+ );
+ }
 }

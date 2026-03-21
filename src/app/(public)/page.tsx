@@ -11,11 +11,11 @@ export default function Home() {
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-10 lg:flex-row lg:items-center lg:gap-16">
             <div className="flex flex-col items-start gap-6 lg:w-1/2">
-              <div className="inline-flex items-center rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-sm font-medium text-blue-200 backdrop-blur-sm">
+              <div className="inline-flex items-center rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-sm font-medium text-primary">
                 <span className="mr-2 flex h-2 w-2 rounded-full bg-green-400 animate-pulse"></span>
                 Enrollment Closing Soon
               </div>
-              <h1 className="text-4xl font-black leading-tight tracking-tight text-white sm:text-6xl">
+              <h1 className="text-4xl font-black leading-tight tracking-tight sm:text-6xl">
                 April Cohorts <br/>
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-primary">Now Open</span>
               </h1>

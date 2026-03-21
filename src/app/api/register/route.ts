@@ -8,16 +8,16 @@ import { checkAuth } from '@/lib/auth-utils';
  * Calculates age from a date of birth.
  */
 function calculateAge(dateOfBirth: Date): number {
-  const today = new Date();
-  const birth = new Date(dateOfBirth);
-  let age = today.getFullYear() - birth.getFullYear();
-  const monthDiff = today.getMonth() - birth.getMonth();
+ const today = new Date();
+ const birth = new Date(dateOfBirth);
+ let age = today.getFullYear() - birth.getFullYear();
+ const monthDiff = today.getMonth() - birth.getMonth();
 
-  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
-    age--;
-  }
+ if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+ age--;
+ }
 
-  return age;
+ return age;
 }
 
 /**
@@ -26,25 +26,25 @@ function calculateAge(dateOfBirth: Date): number {
  * Populates the programId field to display the program name.
  */
 export async function GET() {
-  try {
-    const session = await checkAuth();
-    if (session instanceof NextResponse) return session;
+ try {
+ const session = await checkAuth();
+ if (session instanceof NextResponse) return session;
 
-    await dbConnect();
+ await dbConnect();
 
-    const registrations = await Registration.find({})
-      .populate('programId', 'name category duration price')
-      .sort({ createdAt: -1 })
-      .lean();
+ const registrations = await Registration.find({})
+ .populate('programId', 'name category duration price')
+ .sort({ createdAt: -1 })
+ .lean();
 
-    return NextResponse.json(registrations, { status: 200 });
-  } catch (error) {
-    console.error('Error fetching registrations:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch registrations' },
-      { status: 500 }
-    );
-  }
+ return NextResponse.json(registrations, { status: 200 });
+ } catch (error) {
+ console.error('Error fetching registrations:', error);
+ return NextResponse.json(
+ { error: 'Failed to fetch registrations' },
+ { status: 500 }
+ );
+ }
 }
 
 /**
@@ -56,88 +56,88 @@ export async function GET() {
  * dateOfBirth is provided and the applicant is 25+ years old.
  */
 export async function POST(request: NextRequest) {
-  try {
-    await dbConnect();
+ try {
+ await dbConnect();
 
-    const body = await request.json();
+ const body = await request.json();
 
-    // Validate required fields
-    const { firstName, lastName, email, phone, location, programId } = body;
+ // Validate required fields
+ const { firstName, lastName, email, phone, location, programId } = body;
 
-    if (!firstName || !lastName || !email || !phone || !location || !programId) {
-      return NextResponse.json(
-        {
-          error: 'Missing required fields',
-          details: 'firstName, lastName, email, phone, location, and programId are required.',
-        },
-        { status: 400 }
-      );
-    }
+ if (!firstName || !lastName || !email || !phone || !location || !programId) {
+ return NextResponse.json(
+ {
+ error: 'Missing required fields',
+ details: 'firstName, lastName, email, phone, location, and programId are required.',
+ },
+ { status: 400 }
+ );
+ }
 
-    // ── Mature Entrance Age Validation ──
-    // Look up the program to check if it's a Mature Entrance program
-    const program = await Program.findById(programId).lean();
+ // ── Mature Entrance Age Validation ──
+ // Look up the program to check if it's a Mature Entrance program
+ const program = await Program.findById(programId).lean();
 
-    if (!program) {
-      return NextResponse.json(
-        { error: 'Invalid programId — program not found' },
-        { status: 400 }
-      );
-    }
+ if (!program) {
+ return NextResponse.json(
+ { error: 'Invalid programId — program not found' },
+ { status: 400 }
+ );
+ }
 
-    const isMatureEntrance =
-      program.name?.toLowerCase().includes('mature entrance') ||
-      program.category?.toLowerCase().includes('mature entrance');
+ const isMatureEntrance =
+ program.name?.toLowerCase().includes('mature entrance') ||
+ program.category?.toLowerCase().includes('mature entrance');
 
-    if (isMatureEntrance) {
-      if (!body.dateOfBirth) {
-        return NextResponse.json(
-          {
-            error: 'Date of birth is required',
-            details: 'The Mature Entrance program requires a valid date of birth for age verification.',
-          },
-          { status: 400 }
-        );
-      }
+ if (isMatureEntrance) {
+ if (!body.dateOfBirth) {
+ return NextResponse.json(
+ {
+ error: 'Date of birth is required',
+ details: 'The Mature Entrance program requires a valid date of birth for age verification.',
+ },
+ { status: 400 }
+ );
+ }
 
-      const age = calculateAge(new Date(body.dateOfBirth));
+ const age = calculateAge(new Date(body.dateOfBirth));
 
-      if (age < 25) {
-        return NextResponse.json(
-          {
-            error: 'Age requirement not met',
-            details: `Applicants for the Mature Entrance program must be at least 25 years old. Calculated age: ${age}.`,
-          },
-          { status: 400 }
-        );
-      }
-    }
+ if (age < 25) {
+ return NextResponse.json(
+ {
+ error: 'Age requirement not met',
+ details: `Applicants for the Mature Entrance program must be at least 25 years old. Calculated age: ${age}.`,
+ },
+ { status: 400 }
+ );
+ }
+ }
 
-    const registration = await Registration.create(body);
+ const registration = await Registration.create(body);
 
-    return NextResponse.json(registration, { status: 201 });
-  } catch (error) {
-    console.error('Error creating registration:', error);
+ return NextResponse.json(registration, { status: 201 });
+ } catch (error) {
+ console.error('Error creating registration:', error);
 
-    // Handle Mongoose validation errors
-    if (error instanceof Error && error.name === 'ValidationError') {
-      return NextResponse.json(
-        { error: 'Validation failed', details: error.message },
-        { status: 400 }
-      );
-    }
+ // Handle Mongoose validation errors
+ if (error instanceof Error && error.name === 'ValidationError') {
+ return NextResponse.json(
+ { error: 'Validation failed', details: error.message },
+ { status: 400 }
+ );
+ }
 
-    // Handle invalid ObjectId format
-    if (error instanceof Error && error.name === 'CastError') {
-      return NextResponse.json(
-        { error: 'Invalid programId format' },
-        { status: 400 }
-      );
-    }
+ // Handle invalid ObjectId format
+ if (error instanceof Error && error.name === 'CastError') {
+ return NextResponse.json(
+ { error: 'Invalid programId format' },
+ { status: 400 }
+ );
+ }
 
-    return NextResponse.json(
-      { error: 'Failed to create registration' },
-      { status: 500 }
-    );
-  }
+ return NextResponse.json(
+ { error: 'Failed to create registration' },
+ { status: 500 }
+ );
+ }
 }

@@ -12,25 +12,25 @@ const SALT_ROUNDS = 12;
  * Excludes passwordHash from the response for security.
  */
 export async function GET() {
-  try {
-    const session = await checkAuth();
-    if (session instanceof NextResponse) return session;
+ try {
+ const session = await checkAuth();
+ if (session instanceof NextResponse) return session;
 
-    await dbConnect();
+ await dbConnect();
 
-    const admins = await AdminUser.find({})
-      .select('-passwordHash')
-      .sort({ createdAt: -1 })
-      .lean();
+ const admins = await AdminUser.find({})
+ .select('-passwordHash')
+ .sort({ createdAt: -1 })
+ .lean();
 
-    return NextResponse.json(admins, { status: 200 });
-  } catch (error) {
-    console.error('Error fetching admins:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch admin users' },
-      { status: 500 }
-    );
-  }
+ return NextResponse.json(admins, { status: 200 });
+ } catch (error) {
+ console.error('Error fetching admins:', error);
+ return NextResponse.json(
+ { error: 'Failed to fetch admin users' },
+ { status: 500 }
+ );
+ }
 }
 
 /**
@@ -40,79 +40,79 @@ export async function GET() {
  * Returns 409 on duplicate email.
  */
 export async function POST(request: NextRequest) {
-  try {
-    const session = await checkAuth();
-    if (session instanceof NextResponse) return session;
+ try {
+ const session = await checkAuth();
+ if (session instanceof NextResponse) return session;
 
-    await dbConnect();
+ await dbConnect();
 
-    const body = await request.json();
+ const body = await request.json();
 
-    const { firstName, lastName, email, password, role } = body;
-    // Validate required fields
-    if (!firstName || !lastName || !email || !password) {
-      return NextResponse.json(
-        {
-          error: 'Missing required fields',
-          details: 'firstName, lastName, email, and password are required.',
-        },
-        { status: 400 }
-      );
-    }
+ const { firstName, lastName, email, password, role } = body;
+ // Validate required fields
+ if (!firstName || !lastName || !email || !password) {
+ return NextResponse.json(
+ {
+ error: 'Missing required fields',
+ details: 'firstName, lastName, email, and password are required.',
+ },
+ { status: 400 }
+ );
+ }
 
-    // Validate password length
-    if (password.length < 8) {
-      return NextResponse.json(
-        { error: 'Password must be at least 8 characters long' },
-        { status: 400 }
-      );
-    }
+ // Validate password length
+ if (password.length < 8) {
+ return NextResponse.json(
+ { error: 'Password must be at least 8 characters long' },
+ { status: 400 }
+ );
+ }
 
-    // Hash the temporary password
-    const passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
+ // Hash the temporary password
+ const passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
 
-    const admin = await AdminUser.create({
-      firstName,
-      lastName,
-      email,
-      passwordHash,
-      role: role || 'Support',
-      status: body.status || 'Pending',
-      avatarUrl: body.avatarUrl || undefined,
-    });
+ const admin = await AdminUser.create({
+ firstName,
+ lastName,
+ email,
+ passwordHash,
+ role: role || 'Support',
+ status: body.status || 'Pending',
+ avatarUrl: body.avatarUrl || undefined,
+ });
 
-    // Return the created admin without the password hash
-    const adminResponse = await AdminUser.findById(admin._id)
-      .select('-passwordHash')
-      .lean();
+ // Return the created admin without the password hash
+ const adminResponse = await AdminUser.findById(admin._id)
+ .select('-passwordHash')
+ .lean();
 
-    return NextResponse.json(adminResponse, { status: 201 });
-  } catch (error) {
-    console.error('Error creating admin:', error);
+ return NextResponse.json(adminResponse, { status: 201 });
+ } catch (error) {
+ console.error('Error creating admin:', error);
 
-    // Handle duplicate email (MongoDB unique constraint)
-    if (
-      error instanceof Error &&
-      'code' in error &&
-      (error as Record<string, unknown>).code === 11000
-    ) {
-      return NextResponse.json(
-        { error: 'An admin user with this email already exists' },
-        { status: 409 }
-      );
-    }
+ // Handle duplicate email (MongoDB unique constraint)
+ if (
+ error instanceof Error &&
+ 'code' in error &&
+ (error as Record<string, unknown>).code === 11000
+ ) {
+ return NextResponse.json(
+ { error: 'An admin user with this email already exists' },
+ { status: 409 }
+ );
+ }
 
-    // Handle Mongoose validation errors
-    if (error instanceof Error && error.name === 'ValidationError') {
-      return NextResponse.json(
-        { error: 'Validation failed', details: error.message },
-        { status: 400 }
-      );
-    }
+ // Handle Mongoose validation errors
+ if (error instanceof Error && error.name === 'ValidationError') {
+ return NextResponse.json(
+ { error: 'Validation failed', details: error.message },
+ { status: 400 }
+ );
+ }
 
-    return NextResponse.json(
-      { error: 'Failed to create admin user' },
-      { status: 500 }
-    );
-  }
+ return NextResponse.json(
+ { error: 'Failed to create admin user' },
+ { status: 500 }
+ );
+ }
 }
