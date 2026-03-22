@@ -76,7 +76,7 @@ export async function POST(request: NextRequest) {
  );
  }
 
- const program = await Program.create(body);
+ const program = await Program.create({...body,name:body.name.trim()?.toUpperCase(),description:body.description.trim(),});
 
  return NextResponse.json(program, { status: 201 });
  } catch (error) {
