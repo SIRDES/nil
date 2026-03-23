@@ -289,8 +289,8 @@ export default function AddProgramPage() {
                 onDragLeave={handleDragLeave}
                 onClick={() => fileInputRef.current?.click()}
                 className={`relative flex flex-col items-center justify-center rounded-xl border-2 border-dashed p-8 cursor-pointer transition-all ${isDragging
-                    ? "border-primary bg-primary/5"
-                    : "border-slate-300 hover:border-primary hover:bg-slate-50"
+                  ? "border-primary bg-primary/5"
+                  : "border-slate-300 hover:border-primary hover:bg-slate-50"
                   }`}
               >
                 {form.bannerPreview ? (
@@ -336,9 +336,9 @@ export default function AddProgramPage() {
                 Pricing
               </h2>
               <div className="flex flex-col gap-1.5">
-                <label className="text-sm font-semibold text-slate-700 ">Tuition Fee (USD) <span className="text-red-500">*</span></label>
+                <label className="text-sm font-semibold text-slate-700 ">Tuition Fee (GHS) <span className="text-red-500">*</span></label>
                 <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm font-medium">$</span>
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm font-medium">GHS</span>
                   <input
                     type="number"
                     value={form.price}

@@ -215,7 +215,7 @@ export default function ProgramsPage() {
                                         </div>
                                         <div>
                                             <p className="text-xs text-slate-400 font-medium">Price</p>
-                                            <p className="text-sm font-bold text-slate-900 mt-0.5">${prog.price.toLocaleString()}</p>
+                                            <p className="text-sm font-bold text-slate-900 mt-0.5">GHS {prog.price.toLocaleString()}</p>
                                         </div>
                                     </div>
                                 </div>

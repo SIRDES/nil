@@ -168,7 +168,7 @@ export default function EditProgramPage({ params }: { params: Promise<{ id: stri
         bannerUrl: currentBannerUrl,
         bannerPublicId: currentBannerPublicId,
       };
-      
+
       const res = await fetch(`/api/programs/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -338,11 +338,10 @@ export default function EditProgramPage({ params }: { params: Promise<{ id: stri
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
                 onClick={() => fileInputRef.current?.click()}
-                className={`relative flex flex-col items-center justify-center rounded-xl border-2 border-dashed p-8 cursor-pointer transition-all ${
-                  isDragging
+                className={`relative flex flex-col items-center justify-center rounded-xl border-2 border-dashed p-8 cursor-pointer transition-all ${isDragging
                     ? "border-primary bg-primary/5"
                     : "border-slate-300 hover:border-primary hover:bg-slate-50"
-                }`}
+                  }`}
               >
                 {form.bannerPreview ? (
                   <div className="relative w-full">
@@ -387,9 +386,9 @@ export default function EditProgramPage({ params }: { params: Promise<{ id: stri
                 Pricing
               </h2>
               <div className="flex flex-col gap-1.5">
-                <label className="text-sm font-semibold text-slate-700 ">Tuition Fee (USD) <span className="text-red-500">*</span></label>
+                <label className="text-sm font-semibold text-slate-700 ">Tuition Fee (GHS) <span className="text-red-500">*</span></label>
                 <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm font-medium">$</span>
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm font-medium">GHS</span>
                   <input
                     type="number"
                     value={form.price}
@@ -416,14 +415,12 @@ export default function EditProgramPage({ params }: { params: Promise<{ id: stri
                     role="switch"
                     aria-checked={form.isPublished}
                     onClick={() => updateField("isPublished", !form.isPublished)}
-                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                      form.isPublished ? "bg-primary" : "bg-slate-300"
-                    }`}
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${form.isPublished ? "bg-primary" : "bg-slate-300"
+                      }`}
                   >
                     <span
-                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform shadow-sm ${
-                        form.isPublished ? "translate-x-6" : "translate-x-1"
-                      }`}
+                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform shadow-sm ${form.isPublished ? "translate-x-6" : "translate-x-1"
+                        }`}
                     />
                   </button>
                 </div>
@@ -440,14 +437,12 @@ export default function EditProgramPage({ params }: { params: Promise<{ id: stri
                     role="switch"
                     aria-checked={form.enrollmentOpen}
                     onClick={() => updateField("enrollmentOpen", !form.enrollmentOpen)}
-                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                      form.enrollmentOpen ? "bg-primary" : "bg-slate-300"
-                    }`}
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${form.enrollmentOpen ? "bg-primary" : "bg-slate-300"
+                      }`}
                   >
                     <span
-                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform shadow-sm ${
-                        form.enrollmentOpen ? "translate-x-6" : "translate-x-1"
-                      }`}
+                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform shadow-sm ${form.enrollmentOpen ? "translate-x-6" : "translate-x-1"
+                        }`}
                     />
                   </button>
                 </div>
@@ -471,7 +466,7 @@ export default function EditProgramPage({ params }: { params: Promise<{ id: stri
           >
             {isSubmitting ? (
               <>
-                <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
+                <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" /></svg>
                 Saving...
               </>
             ) : (

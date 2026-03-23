@@ -145,7 +145,7 @@ export default function ProgramDetail() {
                             <div className="p-6 bg-white rounded-xl shadow-xl shadow-primary/5 border border-border-light md:min-w-[320px]">
                                 <p className="text-sm text-text-secondary font-medium mb-1">Tuition</p>
                                 <p className="text-3xl font-black text-text-main mb-1">
-                                    ${program.price.toLocaleString()}
+                                    GHS {program.price.toLocaleString()}
                                 </p>
                                 {program.isFinancialAidEligible && (
                                     <p className="text-xs text-emerald-600 font-medium mb-4">
@@ -247,7 +247,7 @@ export default function ProgramDetail() {
                                     <span className="material-symbols-outlined text-white">payments</span>
                                 </div>
                                 <div>
-                                    <p className="text-lg font-bold">${program.price.toLocaleString()}</p>
+                                    <p className="text-lg font-bold">GHS {program.price.toLocaleString()}</p>
                                     <p className="text-white/80 text-sm">Tuition</p>
                                 </div>
                             </div>
@@ -281,7 +281,7 @@ export default function ProgramDetail() {
                         <div className="flex flex-col gap-3">
                             <div className="flex justify-between items-center">
                                 <span className="text-sm font-medium text-text-secondary">Tuition</span>
-                                <span className="text-xl font-bold text-text-main ">${program.price.toLocaleString()}</span>
+                                <span className="text-xl font-bold text-text-main ">GHS {program.price.toLocaleString()}</span>
                             </div>
                             <div className="h-px bg-border-light"></div>
                             {program.isFinancialAidEligible && (
