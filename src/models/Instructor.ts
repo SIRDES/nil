@@ -10,6 +10,7 @@ export interface IInstructor extends Document {
     linkedInUrl?: string;
     location?: string;
     avatarUrl?: string;
+    avatarPublicId?: string;
     assignedPrograms: Types.ObjectId[];
     availabilityStatus: "full-time" | "part-time" | "contract";
     showProfilePublic: boolean;
@@ -32,6 +33,7 @@ const InstructorSchema = new Schema<IInstructor>({
     location: { type: String, trim: true },
 
     avatarUrl: { type: String, trim: true },
+    avatarPublicId: { type: String, trim: true },
 
     assignedPrograms: [{
         type: Schema.Types.ObjectId,
@@ -56,9 +58,20 @@ const InstructorSchema = new Schema<IInstructor>({
 
     averageRating: { type: Number, default: 0, min: 0, max: 5 },
     reviewCount: { type: Number, default: 0 },
-}, { timestamps: true });
+}, { 
+    timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
+});
 
 // full-time" | "part-time" | "contract
+
+
+// Virtual for full name to make UI rendering easier
+InstructorSchema.virtual('fullName').get(function (this: IInstructor) {
+    return `${this.firstName?.toUpperCase()} ${this.lastName?.toUpperCase()}`;
+});
+
 
 const Instructor: Model<IInstructor> = mongoose.models.Instructor || mongoose.model<IInstructor>('Instructor', InstructorSchema);
 

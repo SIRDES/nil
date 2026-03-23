@@ -15,9 +15,9 @@ export interface IAdminUser extends Document {
 }
 
 const AdminUserSchema = new Schema<IAdminUser>({
-    firstName: { type: String, required: true },
-    lastName: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
+    firstName: { type: String, required: true, trim: true, lowercase: true },
+    lastName: { type: String, required: true, trim: true, lowercase: true },
+    email: { type: String, required: true, unique: true, trim: true, lowercase: true },
     avatarUrl: { type: String },
 
     passwordHash: { type: String, required: true },
@@ -35,11 +35,15 @@ const AdminUserSchema = new Schema<IAdminUser>({
     },
 
     lastLogin: { type: Date },
-}, { timestamps: true });
+}, { 
+    timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
+});
 
 // Virtual for full name to make UI rendering easier
 AdminUserSchema.virtual('fullName').get(function (this: IAdminUser) {
-    return `${this.firstName} ${this.lastName}`;
+    return `${this.firstName?.toUpperCase()} ${this.lastName?.toUpperCase()}`;
 });
 
 const AdminUser: Model<IAdminUser> = mongoose.models.AdminUser || mongoose.model<IAdminUser>('AdminUser', AdminUserSchema);

@@ -40,7 +40,11 @@ const RegistrationSchema = new Schema<IRegistration>({
     },
     paymentReceived: { type: Boolean, default: false },
     internalNotes: { type: String },
-}, { timestamps: true });
+}, { 
+    timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
+});
 
 RegistrationSchema.pre<IRegistration>('save', async function () {
     if (this.isNew && !this.studentId) {
@@ -53,6 +57,13 @@ RegistrationSchema.pre<IRegistration>('save', async function () {
         this.studentId = String(counter?.seq || 1).padStart(4, '0');
     }
 });
+
+
+// Virtual for full name to make UI rendering easier
+RegistrationSchema.virtual('fullName').get(function (this: IRegistration) {
+    return `${this.firstName?.toUpperCase()} ${this.lastName?.toUpperCase()}`;
+});
+
 
 const Registration: Model<IRegistration> = mongoose.models.Registration || mongoose.model<IRegistration>('Registration', RegistrationSchema);
 

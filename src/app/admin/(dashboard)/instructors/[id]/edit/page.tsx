@@ -17,6 +17,7 @@ interface InstructorForm {
     bio: string;
     avatarFile: File | null;
     avatarPreview: string;
+    avatarPublicId?: string;
     email: string;
     phone: string;
     linkedin: string;
@@ -50,6 +51,7 @@ export default function EditInstructorPage({ params }: { params: Promise<{ id: s
         bio: "",
         avatarFile: null,
         avatarPreview: "",
+        avatarPublicId: "",
         email: "",
         phone: "",
         linkedin: "",
@@ -80,6 +82,7 @@ export default function EditInstructorPage({ params }: { params: Promise<{ id: s
                     bio: data.bio || "",
                     avatarFile: null,
                     avatarPreview: data.avatarUrl || "",
+                    avatarPublicId: data.avatarPublicId || "",
                     email: data.email || "",
                     phone: data.phone || "",
                     linkedin: data.linkedInUrl || "",
@@ -142,7 +145,23 @@ export default function EditInstructorPage({ params }: { params: Promise<{ id: s
                 availabilityStatus: form.availability,
                 showProfilePublic: form.showProfilePublic,
                 isActive: form.isActive,
+                avatarUrl: form.avatarPreview,
+                avatarPublicId: form.avatarPublicId,
             };
+
+            // If a new image is selected, upload it first
+            if (form.avatarFile) {
+                const formData = new FormData();
+                formData.append("file", form.avatarFile);
+                const uploadRes = await fetch("/api/upload", {
+                    method: "POST",
+                    body: formData,
+                });
+                if (!uploadRes.ok) throw new Error("Failed to upload image");
+                const uploadData = await uploadRes.json();
+                payload.avatarUrl = uploadData.url;
+                payload.avatarPublicId = uploadData.publicId;
+            }
             const res = await fetch(`/api/instructors/${id}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
@@ -459,10 +478,7 @@ export default function EditInstructorPage({ params }: { params: Promise<{ id: s
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="text-sm font-semibold text-slate-900 ">Active</p>
-                                <p className="text-xs text-slate-500 mt-0.5">Activate this instructor
-
-
-                                </p>
+                                <p className="text-xs text-slate-500 mt-0.5">Activate this instructor</p>
                             </div>
                             <button
                                 type="button"

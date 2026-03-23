@@ -3,6 +3,7 @@ import dbConnect from '@/lib/mongodb';
 import Instructor from '@/models/Instructor';
 import Program from '@/models/Program';
 import { checkAuth } from '@/lib/auth-utils';
+import { deleteImage } from '@/lib/cloudinary';
 
 interface RouteParams {
     params: Promise<{ id: string }>;
@@ -51,6 +52,19 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
 
         const { id } = await params;
         const body = await request.json();
+
+        // If updating avatar, delete the old one from Cloudinary
+        if (body.avatarPublicId) {
+            const currentInstructor = await Instructor.findById(id);
+            if (currentInstructor?.avatarPublicId && currentInstructor.avatarPublicId !== body.avatarPublicId) {
+                try {
+                    await deleteImage(currentInstructor.avatarPublicId);
+                } catch (error) {
+                    console.error('Failed to delete old avatar:', error);
+                    // Continue anyway, we don't want to block the update
+                }
+            }
+        }
 
         const instructor = await Instructor.findByIdAndUpdate(id, body, {
             new: true,
@@ -123,6 +137,15 @@ export async function DELETE(_request: NextRequest, { params }: RouteParams) {
                 { error: 'Instructor not found' },
                 { status: 404 }
             );
+        }
+
+        // Delete avatar from Cloudinary if it exists
+        if (instructor.avatarPublicId) {
+            try {
+                await deleteImage(instructor.avatarPublicId);
+            } catch (error) {
+                console.error('Failed to delete avatar from Cloudinary:', error);
+            }
         }
 
         return NextResponse.json(

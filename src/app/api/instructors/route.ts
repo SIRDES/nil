@@ -15,8 +15,9 @@ export async function GET() {
 
         const instructors = await Instructor.find({})
             .populate('assignedPrograms', 'name category duration')
-            .sort({ createdAt: -1 })
-            .lean();
+            .sort({ createdAt: -1 });
+
+        console.log("instructors", instructors)
 
         return NextResponse.json(instructors, { status: 200 });
     } catch (error) {
@@ -44,13 +45,13 @@ export async function POST(request: NextRequest) {
         const body = await request.json();
 
         // Validate required fields
-        const { firstName, lastName, email, professionalTitle, availabilityStatus, showProfilePublic, isActive } = body;
+        const { firstName, lastName, email, professionalTitle, availabilityStatus } = body;
 
-        if (!firstName || !lastName || !email || !professionalTitle || !availabilityStatus || !showProfilePublic || !isActive) {
+        if (!firstName || !lastName || !email || !professionalTitle || !availabilityStatus) {
             return NextResponse.json(
                 {
                     error: 'Missing required fields',
-                    details: 'firstName, lastName, email, professionalTitle, availabilityStatus, showProfilePublic, and isActive are required.',
+                    details: 'firstName, lastName, email, professionalTitle, and availabilityStatus are required.',
                 },
                 { status: 400 }
             );

@@ -5,20 +5,9 @@ import Link from "next/link";
 import useFetch from "@/hooks/useFetch";
 import { CardGridSkeleton, ErrorBanner, EmptyState } from "@/components/admin/DataStates";
 import toast from "react-hot-toast";
+import { InstructorType } from "@/types/common-types";
 
-/* ─── Types ───────────────────────────────────────────────────── */
-interface Instructor {
-    _id: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    title?: string;
-    bio?: string;
-    specializations: string[];
-    availabilityStatus: string;
-    assignedPrograms: { _id: string; name: string }[] | string[];
-    avatarUrl?: string;
-}
+
 
 /* ─── Avatar Colors ───────────────────────────────────────────── */
 const AVATAR_COLORS = [
@@ -78,13 +67,13 @@ function MetricBg(color: string) {
 
 /* ─── Page Component ──────────────────────────────────────────── */
 export default function InstructorsPage() {
-    const { data: instructors, loading, error, refetch } = useFetch<Instructor>("/api/instructors");
+    const { data: instructors, loading, error, refetch } = useFetch<InstructorType>("/api/instructors");
     const [searchQuery, setSearchQuery] = useState("");
 
     const available = instructors.filter((i) => i.availabilityStatus === "Available").length;
 
     const handleDelete = async (id: string, name: string) => {
-        if (!confirm(`Are you sure you want to delete instructor ${name}?`)) return;
+        if (!confirm(`Are you sure you want to delete instructor: ${name}?`)) return;
 
         try {
             const res = await fetch(`/api/instructors/${id}`, { method: "DELETE" });
@@ -176,7 +165,7 @@ export default function InstructorsPage() {
             ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     {filtered.map((inst, idx) => {
-                        const fullName = `${inst.firstName} ${inst.lastName}`;
+                        // const fullName = `${inst.firstName} ${inst.lastName}`;
                         const initials = getInitials(inst.firstName, inst.lastName);
                         const avatarColor = getColorByIndex(idx, AVATAR_COLORS);
 
@@ -185,14 +174,14 @@ export default function InstructorsPage() {
                                 {/* Top — Avatar + Info */}
                                 <div className="flex items-start gap-4 mb-4">
                                     {inst.avatarUrl ? (
-                                        <img src={inst.avatarUrl} alt={fullName} className="size-14 rounded-full object-cover shrink-0" />
+                                        <img src={inst.avatarUrl} alt={inst.fullName} className="size-14 rounded-full object-cover shrink-0" />
                                     ) : (
                                         <div className={`flex size-14 items-center justify-center rounded-full text-white text-lg font-bold shrink-0 ${avatarColor}`}>
                                             {initials}
                                         </div>
                                     )}
                                     <div className="min-w-0">
-                                        <h3 className="text-base font-bold text-slate-900 truncate">{fullName}</h3>
+                                        <h3 className="text-base font-bold text-slate-900 truncate">{inst.fullName}</h3>
                                         <p className="text-sm text-slate-500 truncate">{inst.title || inst.email}</p>
                                         <div className="mt-1.5">
                                             <AvailabilityPill status={inst.availabilityStatus} />
@@ -205,7 +194,7 @@ export default function InstructorsPage() {
                                     <p className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Assigned Programs</p>
                                     <div className="flex flex-wrap gap-1.5">
                                         {inst.assignedPrograms.length > 0 ? (
-                                            inst.assignedPrograms.map((prog, pIdx) => {
+                                            inst.assignedPrograms.map((prog: any, pIdx: number) => {
                                                 const progName = typeof prog === "object" ? prog.name : prog;
                                                 return (
                                                     <span
@@ -238,7 +227,7 @@ export default function InstructorsPage() {
                                         <span className="material-symbols-outlined text-[16px]">edit</span>
                                     </Link>
                                     <button
-                                        onClick={() => handleDelete(inst._id, fullName)}
+                                        onClick={() => handleDelete(inst._id, inst.fullName)}
                                         className="flex text-xs items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-red-50 text-red-600 font-semibold hover:bg-red-100 transition-colors"
                                     >
                                         <span className="material-symbols-outlined text-[16px]">delete</span>

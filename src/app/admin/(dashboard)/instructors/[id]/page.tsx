@@ -9,6 +9,7 @@ interface InstructorData {
     _id: string;
     firstName: string;
     lastName: string;
+    fullName: string;
     professionalTitle: string;
     bio?: string;
     avatarUrl?: string;
@@ -18,6 +19,10 @@ interface InstructorData {
     location?: string;
     assignedPrograms: Array<{ _id: string; name: string }>;
     availabilityStatus: string;
+    showProfilePublic: boolean;
+    isActive: boolean;
+    averageRating: number;
+    reviewCount: number;
     createdAt: string;
 }
 
@@ -70,7 +75,7 @@ export default function ViewInstructorPage({ params }: { params: Promise<{ id: s
                     </Link>
                     <div>
                         <h1 className="text-2xl font-black text-slate-900 ">Instructor Profile</h1>
-                        <p className="text-sm text-slate-500 mt-0.5">Viewing details for {instructor.firstName} {instructor.lastName}</p>
+                        <p className="text-sm text-slate-500 mt-0.5">Viewing details for {instructor.fullName}</p>
                     </div>
                 </div>
                 <div className="flex items-center gap-3">
@@ -97,15 +102,17 @@ export default function ViewInstructorPage({ params }: { params: Promise<{ id: s
                                 </div>
                             )}
                         </div>
-                        <h2 className="text-xl font-bold text-slate-900 ">{instructor.firstName} {instructor.lastName}</h2>
-                        <p className="text-sm font-medium text-primary mt-1">{instructor.professionalTitle}</p>
+                        <h2 className="text-xl font-bold text-slate-900 ">{instructor.fullName}</h2>
+                        <p className="text-sm font-medium text-primary mt-1">{instructor.professionalTitle?.toUpperCase()}</p>
 
                         <div className="mt-4 flex items-center gap-2">
-                            <span className={`px-3 py-1 rounded-full text-xs font-bold border ${instructor.availabilityStatus === "Active"
-                                    ? "bg-green-50 text-green-700 border-green-200"
-                                    : "bg-amber-50 text-amber-700 border-amber-200"
+                            <span className={`px-3 py-1 rounded-full text-xs font-bold border ${instructor.availabilityStatus === "full-time"
+                                ? "bg-green-50 text-green-700 border-green-200"
+                                : instructor.availabilityStatus === "part-time"
+                                    ? "bg-amber-50 text-amber-700 border-amber-200"
+                                    : "bg-red-50 text-red-700 border-red-200"
                                 }`}>
-                                {instructor.availabilityStatus}
+                                {instructor.availabilityStatus?.toUpperCase()}
                             </span>
                         </div>
                     </div>
@@ -156,6 +163,54 @@ export default function ViewInstructorPage({ params }: { params: Promise<{ id: s
                                     </div>
                                 </div>
                             )}
+                        </div>
+                    </div>
+
+                    {/* Stats & Settings */}
+                    <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+                        <h3 className="text-sm font-bold text-slate-900 mb-4 flex items-center gap-2">
+                            <span className="material-symbols-outlined text-primary text-[18px]">analytics</span>
+                            Performance & Visibility
+                        </h3>
+
+                        <div className="grid grid-cols-2 gap-4 mb-6">
+                            <div className="p-3 bg-slate-50 rounded-lg border border-slate-100">
+                                <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Rating</p>
+                                <div className="flex items-center gap-1">
+                                    <span className="text-lg font-black text-slate-900">{instructor.averageRating?.toFixed(1) || "0.0"}</span>
+                                    <span className="material-symbols-outlined text-amber-400 text-lg">star</span>
+                                </div>
+                            </div>
+                            <div className="p-3 bg-slate-50 rounded-lg border border-slate-100">
+                                <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Reviews</p>
+                                <p className="text-lg font-black text-slate-900">{instructor.reviewCount || 0}</p>
+                            </div>
+                        </div>
+
+                        <div className="space-y-3">
+                            <div className="flex items-center justify-between p-3 rounded-lg border border-slate-100">
+                                <div className="flex items-center gap-2">
+                                    <span className={`material-symbols-outlined text-lg ${instructor.showProfilePublic ? "text-emerald-500" : "text-slate-400"}`}>
+                                        {instructor.showProfilePublic ? "public" : "public_off"}
+                                    </span>
+                                    <span className="text-xs font-semibold text-slate-600">Public Profile</span>
+                                </div>
+                                <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded ${instructor.showProfilePublic ? "bg-emerald-50 text-emerald-700" : "bg-slate-100 text-slate-500"}`}>
+                                    {instructor.showProfilePublic ? "Visible" : "Hidden"}
+                                </span>
+                            </div>
+
+                            <div className="flex items-center justify-between p-3 rounded-lg border border-slate-100">
+                                <div className="flex items-center gap-2">
+                                    <span className={`material-symbols-outlined text-lg ${instructor.isActive ? "text-emerald-500" : "text-red-500"}`}>
+                                        {instructor.isActive ? "check_circle" : "cancel"}
+                                    </span>
+                                    <span className="text-xs font-semibold text-slate-600">Account Status</span>
+                                </div>
+                                <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded ${instructor.isActive ? "bg-emerald-50 text-emerald-700" : "bg-red-50 text-red-700"}`}>
+                                    {instructor.isActive ? "Active" : "Inactive"}
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>

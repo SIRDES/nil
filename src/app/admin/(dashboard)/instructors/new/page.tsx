@@ -101,7 +101,23 @@ export default function AddInstructorPage() {
                 availabilityStatus: form.availability,
                 showProfilePublic: form.showProfilePublic,
                 isActive: form.isActive,
+                avatarUrl: "",
+                avatarPublicId: "",
             };
+
+            // If an image is selected, upload it first
+            if (form.avatarFile) {
+                const formData = new FormData();
+                formData.append("file", form.avatarFile);
+                const uploadRes = await fetch("/api/upload", {
+                    method: "POST",
+                    body: formData,
+                });
+                if (!uploadRes.ok) throw new Error("Failed to upload image");
+                const uploadData = await uploadRes.json();
+                payload.avatarUrl = uploadData.url;
+                payload.avatarPublicId = uploadData.publicId;
+            }
             const res = await fetch("/api/instructors", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
