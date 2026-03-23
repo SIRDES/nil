@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useMemo } from "react";
 import Link from "next/link";
-import { getImageUrl } from "@/lib/cloudinary-utils";
+import { getImageUrl } from "@/lib/cloudinary-client";
 
 /* ─── Types ───────────────────────────────────────────────────── */
 interface Program {

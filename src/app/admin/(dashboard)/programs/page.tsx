@@ -5,7 +5,7 @@ import Link from "next/link";
 import useFetch from "@/hooks/useFetch";
 import { CardGridSkeleton, ErrorBanner, EmptyState } from "@/components/admin/DataStates";
 import { IProgram } from "@/models/Program";
-import { getImageUrl } from "@/lib/cloudinary-utils";
+import { getImageUrl } from "@/lib/cloudinary-client";
 
 /* ─── Types ───────────────────────────────────────────────────── */
 interface Program {

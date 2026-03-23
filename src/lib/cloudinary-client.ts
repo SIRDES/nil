@@ -4,7 +4,7 @@
  * @param folderName - The folder name of the image.
  * @param type - The type of transformation to apply.
  */
-export function getImageUrl(publicId: string, folderName: string, type: 'thumbnail' | 'large' | 'profile' = 'thumbnail') {
+export function getImageUrl(publicId: string, type: 'thumbnail' | 'large' | 'profile' = 'thumbnail') {
   // Use NEXT_PUBLIC_ if available (for client-side), otherwise fallback to server-side env var
   const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || "";
 

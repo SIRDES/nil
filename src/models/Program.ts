@@ -19,13 +19,13 @@ export interface IProgram extends Document {
 }
 
 const ProgramSchema = new Schema<IProgram>({
-  name: { type: String, required: true },
-  description: { type: String, required: true },
-  category: { type: String },
+  name: { type: String, required: true, trim: true, lowercase: true, unique: true },
+  description: { type: String, required: true, trim: true },
+  category: { type: String, trim: true },
   duration: { type: String, required: true },
   difficultyLevel: { type: String, required: true, enum: ['Beginner', 'Intermediate', 'Advanced'] },
 
-  curriculumHighlights: [{ type: String }],
+  curriculumHighlights: [{ type: String, trim: true }],
 
   price: { type: Number, required: true },
   isFinancialAidEligible: { type: Boolean, default: false },
