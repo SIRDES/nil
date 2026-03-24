@@ -291,13 +291,13 @@ export default function ProgramsPage() {
                                 admissions advisor today to find your perfect path in tech.
                             </p>
                             <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-                                <Link
+                                {/* <Link
                                     href="/register"
                                     className="flex items-center justify-center gap-2 min-w-[200px] h-14 bg-white text-primary rounded-full font-bold transition-transform hover:scale-105 active:scale-95"
                                 >
                                     <span className="material-symbols-outlined">quiz</span>
                                     Take Assessment
-                                </Link>
+                                </Link> */}
                                 <Link
                                     href="/contact"
                                     className="flex items-center justify-center gap-2 min-w-[200px] h-14 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full font-bold transition-transform hover:scale-105 active:scale-95"
