@@ -276,7 +276,7 @@ export default function AddInstructorPage() {
                                         type="tel"
                                         value={form.phone}
                                         onChange={(e) => update("phone", e.target.value)}
-                                        placeholder="+1 555 000 0000"
+                                        placeholder="e.g. 0200000000"
                                         className="w-full h-11 pl-10 pr-4 rounded-lg border border-slate-200 bg-slate-50 text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-primary focus:border-primary text-sm"
                                     />
                                 </div>

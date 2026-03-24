@@ -297,7 +297,7 @@ export default function RegistrationWizard() {
                                     type="tel"
                                     {...register("phone")}
                                     className={`border rounded-xl px-4 h-12 bg-transparent text-text-main focus:ring-2 focus:ring-primary ${errors.phone ? 'border-red-500' : 'border-slate-200'}`}
-                                    placeholder="+233 55 000 0000"
+                                    placeholder="e.g. 0200000000"
                                 />
                                 {errors.phone && <span className="text-xs text-red-500 font-medium">{errors.phone.message}</span>}
                             </div>

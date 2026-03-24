@@ -1,8 +1,7 @@
 
 import Link from "next/link";
 import type { Metadata } from "next";
-import { InstructorType } from "@/types/common-types";
-import useFetch from "@/hooks/useFetch";
+import InstructorsSection from "@/components/public/InstructorsSection";
 
 export const metadata: Metadata = {
     title: "About Us | Natural Intelligence Lab",
@@ -38,30 +37,6 @@ const TIMELINE = [
     },
 ];
 
-/* ─── Team data ───────────────────────────────────────────────── */
-// const TEAM = [
-//     {
-//         name: "Sarah Jenkins",
-//         role: "Lead Instructor, Cybersecurity",
-//         bio: "Ex-Amazon Security Engineer with 12 years of experience in network defense and ethical hacking.",
-//         image:
-//             "https://lh3.googleusercontent.com/aida-public/AB6AXuC3un9zi_DuGs1sdOq5uYq1Hz918LfnBkGUVLyi7Vr_16HD_4mehEiX_gL0kT8HQ0bZogrwfrQWJa7xOJxz1zf2Qlbx4NSwnVq562AplaRPUBkt45HDYarYt3elE7_9XfNhh1LROlAnQPz01r4zlvS1PPyOkni6b9xUpEfkoZcZHvAUWtXkC2IDU40PEJ_MmQ50axlD8oKAJMcKhMjWLMmqHHCcBI-kgRYNp_XVGS0lbDnkdwbv_UZvK4P8mWQRlwTPlGxecoA7H4k",
-//     },
-//     {
-//         name: "David Chen",
-//         role: "Director of Curriculum",
-//         bio: "Specialist in Adult Learning Methodologies with a background in Full-Stack Development.",
-//         image:
-//             "https://lh3.googleusercontent.com/aida-public/AB6AXuCpw5YzPut73HiQC93JdcrEiNbFmaQDLtV1vzaw31AZo2P64xLegO03tD8cPYzwIHZWsMXGFgct-ge9-X1VpfSYhKtvSoU0au0Pal45sPiq0fr1tKzJzhI_CLMXijzJWhFlZ6QCJMXsDdVL15m7P0sBNlK0l5uR-JagLOrCPaIh_I2HmDjwnj_VDIIxZJcBKEAGo43YRWJz9tALwZi8J4Fm6fen7_O5WYxwcwtxzWGiLG0IMFXiEQRsc1M5g5eA46Y-xtpV4igD7aI",
-//     },
-//     {
-//         name: "Aisha Rahmani",
-//         role: "Senior Cloud Architect",
-//         bio: "AWS Certified Professional helping students master cloud infrastructure and DevOps pipelines.",
-//         image:
-//             "https://lh3.googleusercontent.com/aida-public/AB6AXuApHCtZKqSX3A0PB9xOQHlsJfAH4yCbWFrR5FCWkry3I4eUkFa6sy1fRAYoaNbRMIloQFR9qwoSN6tK7DjTgUTOaL7hY0zt7oAwjy4RSxCbApLSEK5wfxOHFQefti85l0XTF7xb3wIjFlwu9aTR3vqXELdnQ5zimZhHyUKP-xNBck57vNSxwZsczaAovP_ZfJ7rtxTopQw-yWOSkVAD6FYiIb_BhNlm09-ahbMSz15WkxJWSMzWsAc243weDbymlu800aB5qXV0Ch0",
-//     },
-// ];
 
 /* ─── Stats data ──────────────────────────────────────────────── */
 const STATS = [
@@ -73,8 +48,6 @@ const STATS = [
 
 /* ─── Page Component ──────────────────────────────────────────── */
 export default function AboutUsPage() {
-    const { data: instructors, loading, error, refetch } = useFetch<InstructorType>("/api/instructors");
-
     return (
         <div className="flex flex-col flex-1">
             {/* ─── Hero Banner ──────────────────────────────────────── */}
@@ -188,49 +161,7 @@ export default function AboutUsPage() {
             </section>
 
             {/* ─── Meet Our Team ────────────────────────────────────── */}
-            <section className="px-4 md:px-10 lg:px-20 py-20 md:py-24 bg-primary/5">
-                <div className="max-w-7xl mx-auto">
-                    <div className="text-center mb-16 space-y-4">
-                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider mx-auto">
-                            <span className="material-symbols-outlined text-sm">groups</span>
-                            Our People
-                        </div>
-                        <h2 className="text-3xl md:text-4xl font-bold text-text-main">
-                            Meet Our Team
-                        </h2>
-                        <p className="text-text-secondary max-w-2xl mx-auto text-lg">
-                            Our instructors are industry veterans with a passion for teaching.
-                            We believe in mentorship that goes beyond the classroom.
-                        </p>
-                    </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {instructors?.map((member) => (
-                            <div
-                                key={member._id}
-                                className="bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl hover:shadow-primary/10 transition-all duration-300 group hover:-translate-y-1 border border-border-light"
-                            >
-                                <div className="aspect-square mb-6 overflow-hidden rounded-xl">
-                                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                                    <img
-                                        alt={member.fullName}
-                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                                        src={member.avatarUrl}
-                                    />
-                                </div>
-                                <h4 className="text-xl font-bold text-text-main">
-                                    {member.fullName}
-                                </h4>
-                                <p className="text-primary font-medium text-sm mb-3">
-                                    {member.specializations}
-                                </p>
-                                <p className="text-text-secondary text-sm leading-relaxed line-clamp-3">
-                                    {member.bio}
-                                </p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
+            <InstructorsSection />
 
             {/* ─── CTA Section ──────────────────────────────────────── */}
             <section className="px-4 md:px-10 lg:px-20 py-16 md:py-24">

@@ -210,7 +210,7 @@ export default function AddRegistrationModal({ onClose }: AddRegistrationModalPr
                                 <label className="text-sm font-semibold text-slate-700 ">Phone Number <span className="text-red-500">*</span></label>
                                 <input
                                     type="tel"
-                                    placeholder="+233 55 000 0000"
+                                    placeholder="e.g. 0200000000"
                                     value={phone}
                                     onChange={(e) => { setPhone(e.target.value); setFieldErrors(prev => ({ ...prev, phone: "" })); }}
                                     className={inputClass("phone")}
