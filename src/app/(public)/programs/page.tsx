@@ -101,16 +101,16 @@ function ProgramCard({ program }: { program: Program }) {
             </div>
 
             {/* Content */}
-            <div className="p-8 flex flex-col flex-1">
-                <div className="flex justify-between items-start mb-4">
-                    <h3 className="text-2xl font-bold text-slate-900">{program.name}</h3>
-                    <span
+            <div className="p-4 flex flex-col flex-1">
+                <div className="mb-4">
+                    <h3 className="text-lg font-bold text-slate-900">{program.name}</h3>
+                    <p
                         className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap ${getBadgeClasses(
                             program.difficultyLevel
                         )}`}
                     >
                         {program.duration}
-                    </span>
+                    </p>
                 </div>
 
                 <p className="text-text-secondary mb-8 flex-1 leading-relaxed line-clamp-3">
@@ -230,7 +230,7 @@ export default function ProgramsPage() {
             <section className="px-4 md:px-10 lg:px-20 pb-16">
                 <div className="max-w-7xl mx-auto w-full">
                     {loading && (
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                             {Array.from({ length: 4 }).map((_, i) => (
                                 <ProgramCardSkeleton key={i} />
                             ))}
@@ -268,7 +268,7 @@ export default function ProgramsPage() {
                     )}
 
                     {!loading && !error && filtered.length > 0 && (
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                             {filtered.map((program) => (
                                 <ProgramCard key={program._id} program={program} />
                             ))}

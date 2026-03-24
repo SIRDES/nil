@@ -101,7 +101,7 @@ function ProgramCard({ program }: { program: Program }) {
                 </div>
 
                 <h4 className="text-xl font-bold text-slate-900">
-                    {program.name}
+                    {program.name?.toUpperCase()}
                 </h4>
 
                 <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-600 line-clamp-3">

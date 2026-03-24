@@ -86,10 +86,10 @@ export default function InstructorsPage() {
     };
 
     const metrics = [
-        { label: "Active Instructors", value: String(available), icon: "people", color: "blue" },
         { label: "Total Instructors", value: String(instructors.length), icon: "school", color: "green" },
-        { label: "On Leave", value: String(instructors.filter((i) => i.availabilityStatus === "On Leave").length), icon: "event_busy", color: "amber" },
-        { label: "Unavailable", value: String(instructors.filter((i) => i.availabilityStatus === "Unavailable").length), icon: "person_off", color: "purple" },
+        { label: "Full-time Instructors", value: String(instructors.filter((i) => i.availabilityStatus === "full-time").length), icon: "people", color: "blue" },
+        { label: "Part-time Instructors", value: String(instructors.filter((i) => i.availabilityStatus === "part-time").length), icon: "event_busy", color: "amber" },
+        { label: "Contract Instructors", value: String(instructors.filter((i) => i.availabilityStatus === "contract").length), icon: "person_off", color: "purple" },
     ];
 
     const filtered = instructors.filter(

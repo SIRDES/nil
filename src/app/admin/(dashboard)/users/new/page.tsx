@@ -24,7 +24,7 @@ interface AddAdminForm {
 const ROLES = ["Super Admin", "Registrar", "Program Manager", "Instructor", "Editor", "Support"];
 
 const MODULE_PERMISSIONS = [
-    { key: "analytics", label: "Analytics Dashboard", icon: "analytics" },
+    // { key: "analytics", label: "Analytics Dashboard", icon: "analytics" },
     { key: "registrations", label: "Registrations Management", icon: "assignment" },
     { key: "programs", label: "Program Settings", icon: "local_library" },
     { key: "instructors", label: "Instructor Management", icon: "people" },
@@ -93,7 +93,7 @@ export default function AddAdminPage() {
             phone: "",
             role: "",
             password: "",
-            permissions: ["analytics", "registrations"],
+            permissions: ["registrations",],
             // sendInvite: true,
             // enforce2FA: false,
             accountStatus: "Active",

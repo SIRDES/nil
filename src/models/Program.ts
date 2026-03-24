@@ -19,7 +19,7 @@ export interface IProgram extends Document {
 }
 
 const ProgramSchema = new Schema<IProgram>({
-  name: { type: String, required: true, trim: true, lowercase: true, unique: true },
+  name: { type: String, required: true, trim: true, uppercase: true, unique: true },
   description: { type: String, required: true, trim: true },
   category: { type: String, trim: true },
   duration: { type: String, required: true },
