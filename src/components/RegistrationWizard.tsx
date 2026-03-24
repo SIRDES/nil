@@ -26,8 +26,7 @@ const RegistrationSchema = z.object({
     lastName: z.string().min(1, "Last Name is required"),
     email: z.string().email("Invalid email address"),
     phone: z.string().min(7, "Phone number is required"),
-    city: z.string().min(2, "City is required"),
-    country: z.string().min(2, "Country is required"),
+    location: z.string().min(2, "Location is required"),
 
     program: z.string().min(1, "Please select a program"),
     dateOfBirth: z.date().optional(),
@@ -96,7 +95,7 @@ export default function RegistrationWizard() {
     const nextStep = async () => {
         let fieldsToValidate: (keyof RegistrationFormData)[] = [];
         if (step === 1) {
-            fieldsToValidate = ['firstName', 'lastName', 'email', 'phone', 'city', 'country'];
+            fieldsToValidate = ['firstName', 'lastName', 'email', 'phone', 'location'];
         } else if (step === 2) {
             fieldsToValidate = ['program'];
         }
@@ -146,8 +145,8 @@ export default function RegistrationWizard() {
                 lastName: data.lastName,
                 email: data.email,
                 phone: data.phone,
-                location: `${data.city}, ${data.country}`,
-                programId: data.program, // data.program now contains the real MongoDB ObjectId
+                location: data.location,
+                programId: data.program,
                 ...(data.dateOfBirth ? { dateOfBirth: data.dateOfBirth.toISOString() } : {}),
             };
 
@@ -305,25 +304,16 @@ export default function RegistrationWizard() {
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                             <div className="flex flex-col gap-2">
-                                <label className="text-sm font-bold text-slate-700 ">City</label>
+                                <label className="text-sm font-bold text-slate-700 ">Location</label>
                                 <input
                                     type="text"
-                                    {...register("city")}
-                                    className={`border rounded-xl px-4 h-12 bg-transparent text-text-main focus:ring-2 focus:ring-primary ${errors.city ? 'border-red-500' : 'border-slate-200'}`}
+                                    {...register("location")}
+                                    className={`border rounded-xl px-4 h-12 bg-transparent text-text-main focus:ring-2 focus:ring-primary ${errors.location ? 'border-red-500' : 'border-slate-200'}`}
                                     placeholder="Accra"
                                 />
-                                {errors.city && <span className="text-xs text-red-500 font-medium">{errors.city.message}</span>}
+                                {errors.location && <span className="text-xs text-red-500 font-medium">{errors.location.message}</span>}
                             </div>
-                            <div className="flex flex-col gap-2">
-                                <label className="text-sm font-bold text-slate-700 ">Country</label>
-                                <input
-                                    type="text"
-                                    {...register("country")}
-                                    className={`border rounded-xl px-4 h-12 bg-transparent text-text-main focus:ring-2 focus:ring-primary ${errors.country ? 'border-red-500' : 'border-slate-200'}`}
-                                    placeholder="Ghana"
-                                />
-                                {errors.country && <span className="text-xs text-red-500 font-medium">{errors.country.message}</span>}
-                            </div>
+
                         </div>
                     </div>
 
@@ -444,7 +434,7 @@ export default function RegistrationWizard() {
                                     </div>
                                     <div className="grid grid-cols-3">
                                         <dt className="text-slate-500 ">Location</dt>
-                                        <dd className="col-span-2 font-medium text-slate-900 ">{watch("city")}, {watch("country")}</dd>
+                                        <dd className="col-span-2 font-medium text-slate-900 ">{watch("location")}</dd>
                                     </div>
                                     {watch("dateOfBirth") && isMatureEntrance && (
                                         <div className="grid grid-cols-3">
@@ -543,7 +533,7 @@ export default function RegistrationWizard() {
                                     </>
                                 ) : (
                                     <>
-                                        Submit Registration
+                                        Submit
                                         <span className="material-symbols-outlined text-sm">check_circle</span>
                                     </>
                                 )}
