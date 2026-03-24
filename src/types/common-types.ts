@@ -1,5 +1,5 @@
 /* ─── Types ───────────────────────────────────────────────────── */
-export interface Instructor {
+export interface InstructorType {
     _id: string;
     firstName: string;
     lastName: string;

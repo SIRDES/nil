@@ -1,10 +1,10 @@
 "use client";
 
 import useFetch from "@/hooks/useFetch";
-import { Instructor } from "@/types/common-types";
+import { InstructorType } from "@/types/common-types";
 
 export default function InstructorsSection() {
-    const { data: instructors, loading, error } = useFetch<Instructor>("/api/instructors");
+    const { data: instructors, loading, error } = useFetch<InstructorType>("/api/instructors");
 
     if (error) {
         return (
