@@ -31,8 +31,8 @@ export default function AdminSidebar() {
                 key={item.href}
                 href={item.href}
                 className={`flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all group ${isActive
-                        ? "bg-primary text-white shadow-lg shadow-primary/20"
-                        : "text-slate-400 hover:bg-white/5 hover:text-white"
+                    ? "bg-primary text-white shadow-lg shadow-primary/20"
+                    : "text-slate-400 hover:bg-white/5 hover:text-white"
                     }`}
             >
                 <span className={`material-symbols-outlined text-xl ${isActive ? "text-white" : "text-slate-500 group-hover:text-white"}`}>
@@ -55,7 +55,7 @@ export default function AdminSidebar() {
                 <div className="flex size-9 items-center justify-center rounded-lg bg-primary text-white">
                     <span className="material-symbols-outlined text-xl">school</span>
                 </div>
-                <h1 className="text-white text-lg font-bold tracking-tight">TechSchool</h1>
+                <h1 className="text-white text-lg font-bold tracking-tight">FBI Admin</h1>
             </div>
 
             {/* Navigation */}

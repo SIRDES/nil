@@ -48,7 +48,7 @@ export default function Header() {
                                 </span>
                             </div>
                             <h2 className="text-xl font-bold tracking-tight text-slate-900">
-                                NIL
+                                FBI
                             </h2>
                         </Link>
                     </div>
@@ -61,8 +61,8 @@ export default function Header() {
                                     <Link
                                         key={link.href}
                                         className={`text-sm font-medium transition-colors ${pathname === link.href
-                                                ? "text-primary font-semibold"
-                                                : "text-slate-600 hover:text-primary"
+                                            ? "text-primary font-semibold"
+                                            : "text-slate-600 hover:text-primary"
                                             }`}
                                         href={link.href}
                                     >
@@ -88,8 +88,8 @@ export default function Header() {
             {/* Backdrop */}
             <div
                 className={`fixed inset-0 z-[60] bg-black/40 backdrop-blur-sm transition-opacity duration-300 md:hidden ${mobileOpen
-                        ? "opacity-100 pointer-events-auto"
-                        : "opacity-0 pointer-events-none"
+                    ? "opacity-100 pointer-events-auto"
+                    : "opacity-0 pointer-events-none"
                     }`}
                 onClick={() => setMobileOpen(false)}
                 aria-hidden="true"
@@ -108,7 +108,7 @@ export default function Header() {
                         </div>
                         <div>
                             <h2 className="text-lg font-bold tracking-tight text-slate-900">
-                                NIL
+                                FBI
                             </h2>
                             <p className="text-[10px] uppercase tracking-widest text-slate-400 font-semibold">
                                 Training Center
@@ -135,8 +135,8 @@ export default function Header() {
                                         href={link.href}
                                         onClick={() => setMobileOpen(false)}
                                         className={`flex items-center gap-4 px-4 py-3.5 rounded-xl text-sm font-semibold transition-all duration-200 ${isActive
-                                                ? "bg-primary text-white shadow-lg shadow-primary/30"
-                                                : "text-slate-700 hover:bg-slate-50 active:bg-slate-100"
+                                            ? "bg-primary text-white shadow-lg shadow-primary/30"
+                                            : "text-slate-700 hover:bg-slate-50 active:bg-slate-100"
                                             }`}
                                     >
                                         <span
@@ -161,7 +161,7 @@ export default function Header() {
                 {/* Drawer Footer */}
                 <div className="px-6 py-5 border-t border-slate-100">
                     <p className="text-[10px] text-center uppercase tracking-widest text-slate-400 font-medium">
-                        <span className="text-primary">◈</span> Natural Intelligence Lab{" "}
+                        <span className="text-primary">◈</span> Future Bridge Institute {" "}
                         <span className="text-primary">◈</span>
                     </p>
                 </div>

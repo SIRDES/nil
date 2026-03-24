@@ -9,9 +9,9 @@ export default function Footer() {
                         <div className="size-8 bg-primary rounded-lg flex items-center justify-center text-white">
                             <span className="material-symbols-outlined text-xl">school</span>
                         </div>
-                        <span className="text-lg font-bold text-slate-900">NIL</span>
+                        <span className="text-lg font-bold text-slate-900">FBI</span>
                     </div>
-                    <p>© {new Date().getFullYear()} Natural Intelligence Lab. All rights reserved.</p>
+                    <p>© {new Date().getFullYear()} Future Bridge Institute . All rights reserved.</p>
                 </div>
                 <div className="flex gap-6">
                     <Link href="#" className="hover:text-primary transition-colors">Privacy Policy</Link>
