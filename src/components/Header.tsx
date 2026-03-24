@@ -161,7 +161,7 @@ export default function Header() {
                 {/* Drawer Footer */}
                 <div className="px-6 py-5 border-t border-slate-100">
                     <p className="text-[10px] text-center uppercase tracking-widest text-slate-400 font-medium">
-                        <span className="text-primary">◈</span> Future Bridge Institute {" "}
+                        <span className="text-primary">◈</span> Future Bridge Institute{" "}
                         <span className="text-primary">◈</span>
                     </p>
                 </div>

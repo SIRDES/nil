@@ -4,9 +4,9 @@ import type { Metadata } from "next";
 import InstructorsSection from "@/components/public/InstructorsSection";
 
 export const metadata: Metadata = {
-    title: "About Us | Future Bridge Institute ",
+    title: "About Us | Future Bridge Institute",
     description:
-        "Learn about our mission, story, and the expert team behind Future Bridge Institute 's industry-leading IT training programs.",
+        "Learn about our mission, story, and the expert team behind Future Bridge Institute's industry-leading IT training programs.",
 };
 
 /* ─── Timeline data ───────────────────────────────────────────── */
@@ -178,7 +178,7 @@ export default function AboutUsPage() {
                             </h2>
                             <p className="text-slate-400 max-w-xl mx-auto text-lg leading-relaxed">
                                 Join thousands of professionals who have transformed their
-                                careers with Future Bridge Institute .
+                                careers with Future Bridge Institute.
                             </p>
                             <div className="flex flex-wrap justify-center gap-4 pt-2">
                                 <Link

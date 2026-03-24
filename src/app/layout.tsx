@@ -9,7 +9,7 @@ const lexend = Lexend({
 });
 
 export const metadata: Metadata = {
-    title: "Future Bridge Institute ",
+    title: "Future Bridge Institute",
     description: "Launch your career in technology with our intensive, industry-aligned training programs.",
 };
 

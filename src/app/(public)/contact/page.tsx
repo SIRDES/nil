@@ -295,7 +295,7 @@ export default function Contact() {
                             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3970.7251579163667!2d-0.18804412476602764!3d5.607552494373348!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfdf9b4ab98812cf%3A0x5e8413943cb6d9e9!2sVolta%20Place%20(VRA%20PROPCo)!5e0!3m2!1sen!2sgh!4v1774332905689!5m2!1sen!2sgh"
                             className="absolute inset-0 w-full h-full border-0 grayscale hover:grayscale-0 transition-all duration-500"
                             loading="lazy"
-                            title="Future Bridge Institute  Location Map"
+                            title="Future Bridge Institute Location Map"
                             allowFullScreen
                         ></iframe>
 

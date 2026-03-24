@@ -37,7 +37,7 @@ export default function AdminDashboardLayout({
                     {children}
                 </main>
                 <footer className="border-t border-slate-200 py-4 px-8 text-xs text-slate-400">
-                    © {new Date().getFullYear()} Future Bridge Institute . All rights reserved.
+                    © {new Date().getFullYear()} Future Bridge Institute. All rights reserved.
                 </footer>
             </div>
         </div>

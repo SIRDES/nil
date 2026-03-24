@@ -11,7 +11,7 @@ export default function Footer() {
                         </div>
                         <span className="text-lg font-bold text-slate-900">FBI</span>
                     </div>
-                    <p>© {new Date().getFullYear()} Future Bridge Institute . All rights reserved.</p>
+                    <p>© {new Date().getFullYear()} Future Bridge Institute. All rights reserved.</p>
                 </div>
                 <div className="flex gap-6">
                     <Link href="#" className="hover:text-primary transition-colors">Privacy Policy</Link>
