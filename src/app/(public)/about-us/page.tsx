@@ -15,7 +15,7 @@ const TIMELINE = [
         year: "2015",
         title: "The Beginning",
         description:
-            "FBI started in a small community center with a bold vision: to bridge the growing gap between corporate IT requirements and the skills available in the local workforce.",
+            "Future Bridge Institute started in a small community center with a bold vision: to bridge the growing gap between corporate IT requirements and the skills available in the local workforce.",
     },
     {
         year: "2018",

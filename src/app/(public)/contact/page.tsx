@@ -292,12 +292,15 @@ export default function Contact() {
                 <div className="w-full bg-white rounded-lg overflow-hidden shadow-sm border border-slate-100 p-2">
                     <div className="relative w-full h-[400px] rounded-lg overflow-hidden bg-slate-200">
                         <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3970.7251579163667!2d-0.18804412476602764!3d5.607552494373348!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfdf9b4ab98812cf%3A0x5e8413943cb6d9e9!2sVolta%20Place%20(VRA%20PROPCo)!5e0!3m2!1sen!2sgh!4v1774332905689!5m2!1sen!2sgh"
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d127076.77584320995!2d-0.40853335664063517!3d5.544877599999995!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfdf99911ddc3489%3A0x74254a0465d047c7!2sCheezzy%20Pizza%20Hansonic%20Dansoman%20(formerly%20Eddys%20Pizza)!5e0!3m2!1sen!2sgh!4v1775849118489!5m2!1sen!2sgh"
                             className="absolute inset-0 w-full h-full border-0 grayscale hover:grayscale-0 transition-all duration-500"
                             loading="lazy"
                             title="Future Bridge Institute Location Map"
                             allowFullScreen
                         ></iframe>
+
+
+                        {/* <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d127076.77584320995!2d-0.40853335664063517!3d5.544877599999995!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfdf99911ddc3489%3A0x74254a0465d047c7!2sCheezzy%20Pizza%20Hansonic%20Dansoman%20(formerly%20Eddys%20Pizza)!5e0!3m2!1sen!2sgh!4v1775849118489!5m2!1sen!2sgh" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe> */}
 
 
                         {/* <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3970.7251579163667!2d-0.18804412476602764!3d5.607552494373348!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfdf9b4ab98812cf%3A0x5e8413943cb6d9e9!2sVolta%20Place%20(VRA%20PROPCo)!5e0!3m2!1sen!2sgh!4v1774332905689!5m2!1sen!2sgh" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe> */}
@@ -309,9 +312,9 @@ export default function Contact() {
                                 <h4 className="font-bold text-slate-900 text-sm">Main Campus</h4>
                             </div>
                             <p className="text-slate-600 text-xs leading-relaxed">
-                                Volta Place (VRA PROPCo)
-                                JR57+2RC<br />
-                                Airport Residence, Accra, Ghana
+                                Dansoman- Hansonic junction
+                                <br />
+                                Cheezy pizza building- first floor
                             </p>
                         </div>
                     </div>

@@ -38,7 +38,7 @@ export default function AdminLogin() {
                     <div className="size-8 bg-primary rounded-lg flex items-center justify-center">
                         <span className="material-symbols-outlined text-xl text-white">school</span>
                     </div>
-                    <h2 className="text-lg font-bold tracking-tight">FBI Admin Admin</h2>
+                    <h2 className="text-lg font-bold tracking-tight">Future Bridge Institute Admin</h2>
                 </div>
                 <div className="flex items-center gap-6 text-sm">
                     <a href="#" className="text-slate-400 hover:text-white transition-colors">Help Center</a>
@@ -114,7 +114,7 @@ export default function AdminLogin() {
             </main>
 
             <footer className="border-t border-slate-800 py-4 text-center text-xs text-slate-500">
-                © {new Date().getFullYear()} FBI Admin Education Systems. All rights reserved.
+                © {new Date().getFullYear()} Future Bridge Institute Admin Education Systems. All rights reserved.
             </footer>
         </div>
     );

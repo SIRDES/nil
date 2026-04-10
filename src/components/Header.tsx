@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
+import Logo from "@/assets/logo.png";
 
 /* ─── Navigation links ────────────────────────────────────────── */
 const NAV_LINKS = [
@@ -35,20 +37,23 @@ export default function Header() {
 
     return (
         <>
-            <header className="sticky top-0 z-50 w-full border-b border-slate-200 bg-background-light/90 backdrop-blur-md px-6 py-4">
+            <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-gradient-to-r from-primary to-primary-dark backdrop-blur-md px-6 py-4 shadow-lg shadow-primary/10">
                 <div className="mx-auto flex h-14 max-w-7xl items-center justify-between">
                     <div className="flex items-center gap-6">
                         <Link
                             href="/"
                             className="flex items-center gap-3 hover:opacity-80 transition-opacity"
                         >
-                            <div className="flex size-10 items-center justify-center rounded-lg bg-primary text-white">
-                                <span className="material-symbols-outlined text-2xl">
-                                    school
-                                </span>
-                            </div>
-                            <h2 className="text-xl font-bold tracking-tight text-slate-900">
-                                FBI
+                            <Image
+                                src="/logo.png"
+                                alt="Logo"
+                                width={50}
+                                height={50}
+                                unoptimized
+                            // className="invert mix-blend-screen brightness-125"
+                            />
+                            <h2 className="text-xl font-bold tracking-tight text-white">
+                                Future Bridge Institute
                             </h2>
                         </Link>
                     </div>
@@ -61,8 +66,8 @@ export default function Header() {
                                     <Link
                                         key={link.href}
                                         className={`text-sm font-medium transition-colors ${pathname === link.href
-                                            ? "text-primary font-semibold"
-                                            : "text-slate-600 hover:text-primary"
+                                            ? "text-white font-semibold"
+                                            : "text-white/70 hover:text-white"
                                             }`}
                                         href={link.href}
                                     >
@@ -74,7 +79,7 @@ export default function Header() {
 
                         {/* Mobile hamburger button */}
                         <button
-                            className="md:hidden p-2 text-slate-600 hover:text-primary transition-colors"
+                            className="md:hidden p-2 text-white hover:bg-white/10 rounded-lg transition-colors"
                             onClick={() => setMobileOpen(true)}
                             aria-label="Open menu"
                         >
@@ -103,12 +108,20 @@ export default function Header() {
                 {/* Drawer Header */}
                 <div className="flex items-center justify-between px-6 py-5 border-b border-slate-100">
                     <div className="flex items-center gap-3">
-                        <div className="flex size-10 items-center justify-center rounded-lg bg-primary text-white">
+                        {/* <div className="flex size-10 items-center justify-center rounded-lg bg-primary text-white">
                             <span className="material-symbols-outlined text-xl">school</span>
-                        </div>
+                        </div> */}
+                        <Image
+                            src="/logo.png"
+                            alt="Logo"
+                            width={50}
+                            height={50}
+                            unoptimized
+                        // className="invert mix-blend-screen brightness-125"
+                        />
                         <div>
                             <h2 className="text-lg font-bold tracking-tight text-slate-900">
-                                FBI
+                                Future Bridge Institute
                             </h2>
                             <p className="text-[10px] uppercase tracking-widest text-slate-400 font-semibold">
                                 Training Center

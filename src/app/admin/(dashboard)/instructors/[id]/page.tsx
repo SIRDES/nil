@@ -265,7 +265,7 @@ export default function ViewInstructorPage({ params }: { params: Promise<{ id: s
                     </div>
 
                     <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 text-sm text-slate-500 ">
-                        Added to FBI Admin on {new Date(instructor.createdAt).toLocaleDateString("en-US", { year: 'numeric', month: 'long', day: 'numeric' })}
+                        Added to Future Bridge Institute Admin on {new Date(instructor.createdAt).toLocaleDateString("en-US", { year: 'numeric', month: 'long', day: 'numeric' })}
                     </div>
                 </div>
             </div>

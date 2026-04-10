@@ -55,7 +55,7 @@ export default function AdminSidebar() {
                 <div className="flex size-9 items-center justify-center rounded-lg bg-primary text-white">
                     <span className="material-symbols-outlined text-xl">school</span>
                 </div>
-                <h1 className="text-white text-lg font-bold tracking-tight">FBI Admin</h1>
+                <h1 className="text-white text-lg font-bold tracking-tight">Future Bridge Institute Admin</h1>
             </div>
 
             {/* Navigation */}
